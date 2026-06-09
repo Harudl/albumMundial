@@ -1,0 +1,238 @@
+@model albumMundial.Models.Cromo
+
+@{
+    ViewData["Title"] = "Detalles del Cromo";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        color: #1e293b;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card-details {
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(30, 41, 59, 0.05);
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    /* Contenedor del Cromo en Alta Definición */
+    .cromo-view-container {
+        background-color: #f8fafc;
+        border-radius: 14px;
+        width: 100%;
+        max-width: 320px;
+        aspect-ratio: 3 / 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .cromo-view-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: #edf2f7;
+    }
+
+    .badge-view-number {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background-color: #0f172a;
+        color: #ffffff;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        z-index: 10;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Marcos Condicionales Premium */
+    .border-view-estandar {
+        border: 1px solid #cbd5e1;
+    }
+
+    .border-view-oro {
+        border: 4px solid #eab308 !important;
+        background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #fef08a, #eab308) border-box;
+        box-shadow: 0 8px 24px rgba(234, 179, 8, 0.15);
+    }
+
+    .border-view-especial {
+        border: 4px solid #a855f7 !important;
+        background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #c084fc, #a855f7) border-box;
+        box-shadow: 0 8px 24px rgba(168, 85, 247, 0.15);
+    }
+
+    /* Detalles de la Ficha Técnica */
+    .info-label {
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .info-box {
+        background-color: #f8fafc;
+        border: 1px solid #f1f5f9;
+        border-radius: 12px;
+        padding: 12px 16px;
+        transition: background-color 0.2s;
+    }
+
+        .info-box:hover {
+            background-color: #f1f5f9;
+        }
+
+    /* Botonera de navegación */
+    .btn-edit-action {
+        background-color: #00af50;
+        color: white;
+        font-weight: 600;
+        border: none;
+        transition: all 0.2s;
+    }
+
+        .btn-edit-action:hover {
+            background-color: #009645;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 175, 80, 0.2);
+        }
+
+    .link-back {
+        color: #64748b;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+
+        .link-back:hover {
+            color: #00af50;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="mb-4">
+                <a asp-action="Index" class="text-decoration-none link-back small d-inline-flex align-items-center gap-1">
+                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Volver al Catálogo
+                </a>
+            </div>
+
+            <div class="card card-details p-4 p-sm-5">
+                <div class="row g-5 align-items-center">
+
+                    @* 1. SECCIÓN IZQUIERDA: VISTA EXCLUSIVA DEL CROMO *@
+                    <div class="col-md-5 d-flex justify-content-center">
+                        @{
+                            // Evaluación dinámica de la clase del marco perimetral
+                            string edicionClase = "border-view-estandar";
+                            string edicionTexto = Model.Edicion?.ToLower() ?? "";
+
+                            if (edicionTexto.Contains("oro")) edicionClase = "border-view-oro";
+                            else if (edicionTexto.Contains("especial") || edicionTexto.Contains("shiny") || edicionTexto.Contains("leyenda")) edicionClase = "border-view-especial";
+                        }
+
+                        <div class="cromo-view-container @edicionClase">
+                            <span class="badge-view-number">N° @Model.NumeroCromo</span>
+
+                            @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                            {
+                                <img src="@Model.FotoUrl" class="cromo-view-img" alt="Cromo de @Model.Jugador?.Nombre" />
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <i data-lucide="user-square-2" style="width: 64px; height: 64px;" class="text-muted opacity-25 mb-2"></i>
+                                    <p class="text-muted small mb-0">Sin estampa física</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @* 2. SECCIÓN DERECHA: FICHA TÉCNICA RECOPILATORIA *@
+                    <div class="col-md-7">
+                        <div class="mb-4">
+                            <span class="badge text-uppercase px-3 py-2 rounded-pill mb-2 fw-bold"
+                                  style="background-color: @(edicionClase == "border-view-oro" ? "#fef9c3" : edicionClase == "border-view-especial" ? "#f3e8ff" : "#f1f5f9");
+                                color: @(edicionClase == "border-view-oro" ? "#854d0e" : edicionClase == "border-view-especial" ? "#6b21a8" : "#475569");">
+                                🏆 Edición @Model.Edicion
+                            </span>
+                            <h2 class="fw-bold text-dark m-0" style="font-size: 2rem;">
+                                @(Model.Jugador?.Nombre ?? "Crack Desconocido")
+                            </h2>
+                            <p class="text-muted small mt-1">Especificaciones oficiales almacenadas en AlbumMundialDb.</p>
+                        </div>
+
+                        <hr class="text-muted opacity-25 my-3" />
+
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="info-box d-flex align-items-center gap-3">
+                                    <div class="text-success bg-success bg-opacity-10 p-2 rounded-3">
+                                        <i data-lucide="dollar-sign" style="width: 20px; height: 20px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="info-label">Valor de Mercado</div>
+                                        <div class="info-value text-success">$@string.Format("{0:N2}", Model.ValorMercado)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box d-flex align-items-center gap-3">
+                                    <div class="text-dark bg-dark bg-opacity-10 p-2 rounded-3">
+                                        <i data-lucide="hash" style="width: 20px; height: 20px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="info-label">Identificador</div>
+                                        <div class="info-value">CROMO-#@Model.Id</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="info-box d-flex align-items-center gap-3">
+                                    <div class="text-primary bg-primary bg-opacity-10 p-2 rounded-3">
+                                        <i data-lucide="book-open" style="width: 20px; height: 20px;"></i>
+                                    </div>
+                                    <div class="text-truncate">
+                                        <div class="info-label">Álbum Registrado</div>
+                                        <div class="info-value text-truncate">@(Model.Album?.Nombre ?? $"Álbum ID: {Model.AlbumId}")</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 d-flex flex-wrap gap-3">
+                            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-edit-action px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2">
+                                <i data-lucide="pencil" style="width: 16px; height: 16px;"></i> Editar Datos
+                            </a>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2">
+                                <i data-lucide="layout-grid" style="width: 16px; height: 16px;"></i> Catálogo Completo
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
