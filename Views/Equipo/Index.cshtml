@@ -1,0 +1,61 @@
+@model IEnumerable<albumMundial.Models.Equipo>
+@{
+    ViewData["Title"] = "Equipos";
+}
+
+<h1>⚽ Equipos</h1>
+
+<form method="get" asp-action="Index" class="d-flex mb-3">
+    <input type="text" name="buscar" value="@ViewBag.Buscar"
+           class="form-control me-2" placeholder="Buscar por nombre o país..." />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Limpiar</a>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">+ Nuevo Equipo</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Logo</th>
+            <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+            <th>@Html.DisplayNameFor(m => m.DirectorTecnico)</th>
+            <th>@Html.DisplayNameFor(m => m.AnioFundacion)</th>
+            <th>@Html.DisplayNameFor(m => m.GrupoMundialista)</th>
+            <th>País</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.LogoUrl))
+                    {
+                        <img src="@item.LogoUrl" style="width:50px;height:50px;object-fit:cover;" class="rounded" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Sin logo</span>
+                    }
+                </td>
+                <td>@item.Nombre</td>
+                <td>@item.DirectorTecnico</td>
+                <td>@item.AnioFundacion</td>
+                <td>@item.GrupoMundialista</td>
+                <td>@item.Pais?.Nombre</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"
+                       class="btn btn-info btn-sm">Ver</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

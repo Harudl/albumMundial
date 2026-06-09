@@ -1,0 +1,57 @@
+@model albumMundial.Models.Pais
+@{
+    ViewData["Title"] = "Nuevo País";
+}
+
+<h1>🌍 Nuevo País</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Continente" class="form-label"></label>
+                <select asp-for="Continente" class="form-select">
+                    <option value="">-- Seleccionar --</option>
+                    <option>América del Sur</option>
+                    <option>América del Norte</option>
+                    <option>Europa</option>
+                    <option>África</option>
+                    <option>Asia</option>
+                    <option>Oceanía</option>
+                </select>
+                <span asp-validation-for="Continente" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CodigoFifa" class="form-label"></label>
+                <input asp-for="CodigoFifa" class="form-control" maxlength="3" placeholder="Ej: ECU" />
+                <span asp-validation-for="CodigoFifa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="RankingFifa" class="form-label"></label>
+                <input asp-for="RankingFifa" class="form-control" type="number" min="1" max="300" />
+                <span asp-validation-for="RankingFifa" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

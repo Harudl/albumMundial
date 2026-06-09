@@ -1,0 +1,67 @@
+@model albumMundial.Models.Equipo
+@{
+    ViewData["Title"] = "Nuevo Equipo";
+}
+
+<h1>⚽ Nuevo Equipo</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DirectorTecnico" class="form-label"></label>
+                <input asp-for="DirectorTecnico" class="form-control" />
+                <span asp-validation-for="DirectorTecnico" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AnioFundacion" class="form-label"></label>
+                <input asp-for="AnioFundacion" class="form-control" type="number" min="1800" max="2100" />
+                <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GrupoMundialista" class="form-label"></label>
+                <select asp-for="GrupoMundialista" class="form-select">
+                    <option value="">-- Seleccionar grupo --</option>
+                    @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
+                    {
+                        <option value="@g">Grupo @g</option>
+                    }
+                </select>
+                <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PaisId" class="form-label">País</label>
+                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select">
+                    <option value="">-- Seleccionar país --</option>
+                </select>
+                <span asp-validation-for="PaisId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Logo del equipo</label>
+                <input type="file" name="logoFile" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
