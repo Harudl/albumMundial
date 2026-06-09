@@ -1,5 +1,5 @@
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using albumMundial.Models;
 using albumMundial.Data;
@@ -14,10 +14,36 @@ public class JugadoresController : Controller
     }
 
     // GET: JUGADORS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string searchString)    
     {
-        return View(await _context.Jugadores.ToListAsync());
+        var jugadores = _context.Jugadores
+            .Include(j => j.Equipo)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            jugadores = jugadores.Where(j => j.Nombre.Contains(searchString) || j.Equipo.Nombre.Contains(searchString);
+                
+            }
+
+        return View(await jugadores.ToListAsync());
     }
+
+    public async Task<IActionResult> PorEquipo(int Id)
+    {
+        var jugadores = _context.Jugadores 
+        .Include(l => l.Equipo)  
+        .Where(l => l.EquipoId == Id);  
+
+        ViewData["EquipoId"] = Id;   
+
+        ViewData["EquipoNombre"] = jugadores
+            .FirstOrDefault()?.Equipo?.Nombre;  
+
+        return View(await jugadores.OrderBy(l => l.Equipo).ToListAsync());
+    }
+
+
 
     // GET: JUGADORS/Details/5
     public async Task<IActionResult> Details(int? id)
@@ -28,6 +54,7 @@ public class JugadoresController : Controller
         }
 
         var jugador = await _context.Jugadores
+            .Include(j => j.Equipo)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (jugador == null)
         {
@@ -40,6 +67,7 @@ public class JugadoresController : Controller
     // GET: JUGADORS/Create
     public IActionResult Create()
     {
+        ViewData["EquipoId"] = new SelectList(_context.Equipos, "Id", "Nombre");
         return View();
     }
 
@@ -72,6 +100,7 @@ public class JugadoresController : Controller
         {
             return NotFound();
         }
+        ViewData["EquipoId"] = new SelectList(_context.Equipos, "Id", "Nombre", jugador.EquipoId);
         return View(jugador);
     }
 
@@ -119,6 +148,7 @@ public class JugadoresController : Controller
         }
 
         var jugador = await _context.Jugadores
+            .Include(j => j.Equipo)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (jugador == null)
         {
