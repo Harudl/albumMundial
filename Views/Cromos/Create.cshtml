@@ -1,0 +1,212 @@
+@model albumMundial.Models.Cromo
+
+@{
+    ViewData["Title"] = "Crear Cromo";
+}
+
+<style>
+    body {
+        background-color: #f4f6f9; /* Fondo gris claro, muy limpio */
+        color: #1e293b; /* Texto oscuro para excelente contraste */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Tarjeta principal en modo claro */
+    .card-dashboard-light {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(30, 41, 59, 0.05);
+        background-color: #ffffff; /* Tarjeta totalmente blanca */
+    }
+
+    .header-dashboard {
+        padding: 30px 20px 10px 20px;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #475569; /* Gris oscuro para etiquetas legibles */
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.8px;
+    }
+
+    /* Campos de texto y selectores limpios */
+    .form-control-light {
+        background-color: #f8fafc !important; /* Fondo sutilmente gris para los inputs */
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
+        border-radius: 8px;
+        padding: 10px 14px;
+        transition: all 0.2s ease;
+    }
+
+        .form-control-light:focus {
+            background-color: #ffffff !important;
+            border-color: #00af50 !important; /* Enfoque en verde césped */
+            box-shadow: 0 0 0 3px rgba(0, 175, 80, 0.15) !important;
+        }
+
+        .form-control-light::placeholder {
+            color: #94a3b8;
+        }
+
+    /* Zona de carga de archivos en modo claro */
+    .file-dropzone-light {
+        position: relative;
+        border: 2px dashed #cbd5e1;
+        background-color: #f8fafc;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .file-dropzone-light:hover {
+            background-color: #f0fdf4; /* Destello verde suave al pasar el mouse */
+            border-color: #00af50;
+        }
+
+        .file-dropzone-light input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    .dropzone-icon {
+        font-size: 2rem;
+        color: #00af50;
+    }
+
+    /* Botón de acción principal: Verde Estadio */
+    .btn-action-green {
+        background-color: #00af50;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-action-green:hover {
+            background-color: #009645;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 175, 80, 0.2);
+        }
+
+    /* Enlace de regreso */
+    .link-back {
+        color: #64748b;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+
+        .link-back:hover {
+            color: #00af50;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-6">
+
+            <div class="mb-3">
+                <a asp-action="Index" class="text-decoration-none link-back small">
+                    ← Volver al Catálogo de Cromos
+                </a>
+            </div>
+
+            <div class="card card-dashboard-light">
+                <div class="header-dashboard text-center">
+                    <h3 class="fw-bold mb-1" style="color: #0f172a;">Crear Cromo</h3>
+                    <p class="text-muted small">Administración detallada de cromos con foto y edición de mercado.</p>
+                    <hr class="border-secondary opacity-25 mt-3" />
+                </div>
+
+                <div class="card-body px-4 pb-5 pt-0">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <label asp-for="NumeroCromo" class="form-label">Buscar por Número</label>
+                                <input asp-for="NumeroCromo" class="form-control form-control-light" placeholder="Ej: 342" />
+                                <span asp-validation-for="NumeroCromo" class="text-danger small"></span>
+                            </div>
+                            <div class="col-sm-6 mt-3 mt-sm-0">
+                                <label asp-for="Edicion" class="form-label">Filtrar Edición</label>
+                                <input asp-for="Edicion" class="form-control form-control-light" placeholder="Ej: Estándar" />
+                                <span asp-validation-for="Edicion" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ValorMercado" class="form-label">Val. Mercado (USD)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-secondary-subtle text-secondary fw-semibold">$</span>
+                                <input asp-for="ValorMercado" class="form-control form-control-light" placeholder="0.00" type="number" step="0.01" />
+                            </div>
+                            <span asp-validation-for="ValorMercado" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="JugadorId" class="form-label">Seleccionar Jugador</label>
+                            <select asp-for="JugadorId" class="form-select form-control-light" asp-items="ViewBag.JugadorId">
+                                <option value="" selected disabled>-- Buscar jugador --</option>
+                            </select>
+                            <span asp-validation-for="JugadorId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="AlbumId" class="form-label">Álbum Relacionado</label>
+                            <select asp-for="AlbumId" class="form-select form-control-light" asp-items="ViewBag.AlbumId">
+                                <option value="" selected disabled>-- Todos los álbumes --</option>
+                            </select>
+                            <span asp-validation-for="AlbumId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Imagen del Cromo</label>
+                            <div class="file-dropzone-light">
+                                <div class="dropzone-icon mb-2">🖼️</div>
+                                <h6 class="fw-semibold text-secondary mb-1 small">Cargar Imagen desde el dispositivo</h6>
+                                <p class="text-muted text-xs mb-0" style="font-size: 0.75rem;">Formatos admitidos: JPG, PNG</p>
+                                <input type="file" name="imagenCromo" id="imagenCromo" accept="image/*" required />
+                            </div>
+                            <div id="file-name-preview" class="text-success small mt-2 fw-semibold text-center"></div>
+                        </div>
+
+                        <div class="d-grid gap-2 pt-2">
+                            <button type="submit" class="btn btn-action-green">
+                                Guardar Registro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('imagenCromo').addEventListener('change', function(e) {
+            var fileName = e.target.files[0] ? e.target.files[0].name : "";
+            var preview = document.getElementById('file-name-preview');
+            if(fileName) {
+                preview.innerHTML = "✓ Imagen seleccionada: " + fileName;
+            } else {
+                preview.innerHTML = "";
+            }
+        });
+    </script>
+}
