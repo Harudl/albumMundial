@@ -1,0 +1,46 @@
+@model albumMundial.Models.Equipo
+@{
+    ViewData["Title"] = "Eliminar Equipo";
+}
+
+<h1 class="text-danger">⚠️ Eliminar Equipo</h1>
+<hr />
+
+<div class="alert alert-warning">
+    ¿Estás seguro de que deseas eliminar a <strong>@Model.Nombre</strong>?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Nombre)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DirectorTecnico)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.DirectorTecnico)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AnioFundacion)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.AnioFundacion)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GrupoMundialista)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.GrupoMundialista)</dd>
+
+    <dt class="col-sm-3">País</dt>
+    <dd class="col-sm-9">@Model.Pais?.Nombre</dd>
+
+    <dt class="col-sm-3">Logo</dt>
+    <dd class="col-sm-9">
+        @if (!string.IsNullOrEmpty(Model.LogoUrl))
+        {
+            <img src="@Model.LogoUrl" style="width:60px;height:60px;object-fit:cover;" class="rounded" />
+        }
+        else
+        {
+            <span class="text-muted">Sin logo</span>
+        }
+    </dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

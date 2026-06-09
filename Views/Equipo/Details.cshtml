@@ -1,0 +1,56 @@
+@model albumMundial.Models.Equipo
+@{
+    ViewData["Title"] = "Detalle Equipo";
+}
+
+<h1>⚽ @Model.Nombre</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Nombre)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DirectorTecnico)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.DirectorTecnico)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AnioFundacion)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.AnioFundacion)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GrupoMundialista)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.GrupoMundialista)</dd>
+
+    <dt class="col-sm-3">País</dt>
+    <dd class="col-sm-9">@Model.Pais?.Nombre</dd>
+
+    <dt class="col-sm-3">Logo</dt>
+    <dd class="col-sm-9">
+        @if (!string.IsNullOrEmpty(Model.LogoUrl))
+        {
+            <img src="@Model.LogoUrl" style="width:100px;height:100px;object-fit:cover;" class="rounded" />
+        }
+        else
+        {
+            <span class="text-muted">Sin logo</span>
+        }
+    </dd>
+</dl>
+
+@if (Model.Jugadores != null && Model.Jugadores.Any())
+{
+    <h4>Jugadores</h4>
+    <ul class="list-group mb-3">
+        @foreach (var jugador in Model.Jugadores)
+        {
+            <li class="list-group-item">
+                #@jugador.NumeroCamiseta — @jugador.Nombre (@jugador.Posicion)
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted">Este equipo no tiene jugadores registrados.</p>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

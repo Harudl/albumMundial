@@ -1,0 +1,78 @@
+@model albumMundial.Models.Equipo
+@{
+    ViewData["Title"] = "Editar Equipo";
+}
+
+<h1>✏️ Editar Equipo</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="LogoUrl" />
+
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DirectorTecnico" class="form-label"></label>
+                <input asp-for="DirectorTecnico" class="form-control" />
+                <span asp-validation-for="DirectorTecnico" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AnioFundacion" class="form-label"></label>
+                <input asp-for="AnioFundacion" class="form-control" type="number" min="1800" max="2100" />
+                <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GrupoMundialista" class="form-label"></label>
+                <select asp-for="GrupoMundialista" class="form-select">
+                    <option value="">-- Seleccionar grupo --</option>
+                    @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
+                    {
+                        <option value="@g">Grupo @g</option>
+                    }
+                </select>
+                <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PaisId" class="form-label">País</label>
+                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select">
+                    <option value="">-- Seleccionar país --</option>
+                </select>
+                <span asp-validation-for="PaisId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Logo actual</label><br />
+                @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                {
+                    <img src="@Model.LogoUrl" style="width:80px;height:80px;object-fit:cover;" class="rounded mb-2" /><br />
+                }
+                else
+                {
+                    <span class="text-muted">Sin logo</span><br />
+                }
+                <label class="form-label mt-2">Cambiar logo (opcional)</label>
+                <input type="file" name="logoFile" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-warning">Actualizar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,38 @@
+@model albumMundial.Models.Pais
+@{
+    ViewData["Title"] = "Detalle País";
+}
+
+<h1>🌍 @Model.Nombre</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Nombre)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Continente)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.Continente)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CodigoFifa)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.CodigoFifa)</dd>
+
+    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.RankingFifa)</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(m => m.RankingFifa)</dd>
+</dl>
+
+@if (Model.Equipo != null)
+{
+    <h4>Equipo de este país</h4>
+    <ul class="list-group mb-3">
+        <li class="list-group-item">
+            @Model.Equipo.Nombre — Grupo @Model.Equipo.GrupoMundialista
+        </li>
+    </ul>
+}
+else
+{
+    <p class="text-muted">Este país no tiene equipo registrado.</p>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>
