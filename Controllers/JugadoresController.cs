@@ -22,7 +22,7 @@ public class JugadoresController : Controller
 
         if (!string.IsNullOrEmpty(searchString))
         {
-            jugadores = jugadores.Where(j => j.Nombre.Contains(searchString) || j.Equipo.Nombre.Contains(searchString);
+            jugadores = jugadores.Where(j => j.Nombre.Contains(searchString)); //|| j.Equipo.Nombre.Contains(searchString);
                 
             }
 

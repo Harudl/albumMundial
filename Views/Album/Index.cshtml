@@ -1,0 +1,76 @@
+@model IEnumerable<albumMundial.Models.Album>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Albunes</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-check form-switch">
+        <input class="form-check-input"
+               type="checkbox"
+               id="soloEspeciales"
+               name="soloEspeciales"
+               value="true"
+        @(Context.Request.Query["soloEspeciales"] == "true" ? "checked" : "")
+               onchange="this.form.submit()" />
+
+        <label class="form-check-label" for="soloEspeciales">
+            Mostrar solo ediciones especiales
+        </label>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadCromos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EdicionEspecial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cromos)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Anio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CantidadCromos)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EdicionEspecial)
+            </td>
+            <td>
+                    @item.Cromos.Count
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
