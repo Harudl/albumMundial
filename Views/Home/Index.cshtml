@@ -1,8 +1,210 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model albumMundial.Controllers.HomeDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard de Colección";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    :root {
+        --card-bg: #16181f;
+        --border-color: #262936;
+        --accent-yellow: #ffc107;
+        --accent-purple: #8b5cf6;
+        --text-secondary: #8a8f9f;
+    }
+
+    .sports-widget {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.25rem;
+        height: 100%;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+        .sports-widget:hover {
+            border-color: #3b3f54;
+            transform: translateY(-2px);
+        }
+
+    .widget-title {
+        font-size: 0.85rem;
+        text-uppercase: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-secondary);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Diseño para los mini-cromos dinámicos */
+    .mini-cromo-item {
+        background: linear-gradient(135deg, #1e2029 0%, #16181f 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .mini-cromo-img-container {
+        width: 50px;
+        height: 65px;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid #3b3f54;
+        background-color: #0d0e12;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mini-cromo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .stat-bar-bg {
+        background-color: #222531;
+        height: 6px;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .hero-sports-card {
+        background: linear-gradient(180deg, rgba(22,24,31,0.3) 0%, rgba(13,14,18,0.95) 100%), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center center;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        min-height: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+</style>
+
+<div class="row g-4">
+
+    <div class="col-lg-7">
+        <div class="hero-sports-card shadow-lg">
+            <div>
+                <span class="badge bg-warning text-dark text-uppercase fw-bold mb-2 px-2.5 py-1.5" style="font-size: 0.75rem;">World Cup Edition</span>
+                <h1 class="display-5 fw-extrabold text-white mb-2 text-uppercase tracking-tight">Temporada de Fichajes Abierta</h1>
+                <p class="text-white-50 max-width-500 mb-4" style="font-size: 1rem;">
+                    Administra el mercado de transferencias, escanea nuevos ejemplares y completa las escuadras de las naciones globales.
+                </p>
+                <div class="d-flex gap-2">
+                    <a asp-controller="Cromos" asp-action="Index" class="btn btn-light btn-sm fw-bold px-3 py-2 rounded-2 d-flex align-items-center gap-1">
+                        <i data-lucide="layout-grid" style="width: 16px; height: 16px;"></i> Explorar Catálogo
+                    </a>
+                    <a asp-controller="Cromos" asp-action="Create" class="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-2 border-secondary">
+                        + Registrar Cromo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="sports-widget">
+            <div class="widget-title">
+                <i data-lucide="pie-chart" class="text-warning" style="width: 16px; height: 16px;"></i> Resumen de Estadísticas Básicas
+            </div>
+
+            <div class="text-center my-3">
+                <h2 class="display-4 fw-bold m-0 text-white">@Model.TotalCromos</h2>
+                <p class="text-muted small">Cromos en tu posesión actual</p>
+            </div>
+
+            <div class="space-y-3 mt-2">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-white-50">Valor Total de Mercado</span>
+                        <span class="fw-bold text-success">@Model.TotalValorMercado.ToString("C")</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="bg-success h-100" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-white-50">Jugadores en el Sistema</span>
+                        <span class="fw-bold text-warning">@Model.TotalJugadores</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="bg-warning h-100" style="width: 50%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-white-50">Países Registrados</span>
+                        <span class="fw-bold text-purple" style="color: var(--accent-purple) !important;">@Model.TotalPaises</span>
+                    </div>
+                    <div class="stat-bar-bg">
+                        <div class="h-100" style="width: 40%; background-color: var(--accent-purple);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-2">
+        <div class="sports-widget">
+            <div class="widget-title d-flex justify-content-between align-items-center">
+                <span class="d-flex align-items-center gap-2">
+                    <i data-lucide="clock" class="text-info" style="width: 16px; height: 16px;"></i> Últimas Adiciones al Álbum Digital
+                </span>
+                <a asp-controller="Cromos" asp-action="Index" class="text-decoration-none text-warning small fw-semibold">Ver todos →</a>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
+                @if (Model.UltimosCromos != null && Model.UltimosCromos.Any())
+                {
+                    @foreach (var item in Model.UltimosCromos)
+                    {
+                        <div class="col">
+                            <div class="mini-cromo-item">
+                                <div class="mini-cromo-img-container">
+                                    @if (!string.IsNullOrEmpty(item.FotoUrl))
+                                    {
+                                        <img src="@item.FotoUrl" class="mini-cromo-img" alt="Foto @item.Jugador?.Nombre" />
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size: 1.2rem;">🏃‍♂️</span>
+                                    }
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h6 class="text-white mb-0 text-truncate fw-bold" style="font-size: 0.9rem;">
+                                        @(item.Jugador != null ? item.Jugador.Nombre : "Sin Jugador Asignado")
+                                    </h6>
+                                    <p class="text-muted small mb-0 d-flex align-items-center gap-1">
+                                        <span class="badge bg-danger text-uppercase p-1" style="font-size: 0.65rem; background-color: #dc3545 !important;">N° @item.NumeroCromo</span>
+                                        <span class="text-truncate text-white-50" style="font-size: 0.75rem;">
+                                            @(item.Album != null ? item.Album.Nombre : "Edición Base")
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center py-3 text-muted">
+                        <p>No tienes cromos registrados todavía. ¡Comienza agregando uno nuevo!</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
 </div>

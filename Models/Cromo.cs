@@ -15,7 +15,7 @@ namespace albumMundial.Models
         public string Edicion { get; set; } // Ej: Estándar, Brillante, Legendario
 
         [Required(ErrorMessage = "El valor de mercado es obligatorio.")]
-        [Range(0.01, 10000.00, ErrorMessage = "El valor debe ser un número positivo válido.")]
+        [Range(0.01, 100000.00, ErrorMessage = "El valor debe ser un número positivo válido.")]
         [Column(TypeName = "decimal(18,2)")] // Configura el tipo de dato correcto en SQL Server
         [Display(Name = "Valor de Mercado ($)")]
         public decimal ValorMercado { get; set; }

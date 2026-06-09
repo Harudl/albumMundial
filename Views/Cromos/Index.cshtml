@@ -1,0 +1,216 @@
+@model IEnumerable<albumMundial.Models.Cromo>
+
+@{
+    ViewData["Title"] = "Catálogo de Cromos";
+}
+<style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Estructura Base del Cromo Físico */
+    .cromo-card {
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+
+        .cromo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        }
+
+    /* CONTENEDOR DE LA FOTO: Relación de aspecto 3:4 típica de cromos */
+    .cromo-img-container {
+        position: relative;
+        background-color: #f8fafc;
+        width: 100%;
+        aspect-ratio: 3 / 4; /* Mantiene la proporción de cromo simétrica */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* LA SOLUCIÓN AL CORTE: containment perfecto sin deformar */
+    .cromo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Ajusta la imagen completa dentro del cuadro sin cortarla */
+        background-color: #edf2f7; /* Relleno neutro para los bordes si la foto es angosta */
+    }
+
+    /* Posicionamiento del número flotante */
+    .badge-number {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background-color: #0f172a;
+        color: #ffffff;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        z-index: 10;
+    }
+
+    /* ========================================================
+           MARCOS DINÁMICOS SEGÚN EDICIÓN
+           ======================================================== */
+    /* 1. Edición Estándar / Base */
+    .cromo-estandar {
+        border: 1px solid #cbd5e1;
+    }
+
+        .cromo-estandar .badge-edicion {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+    /* 2. Edición Oro */
+    .cromo-oro {
+        border: 2px solid #eab308 !important;
+        background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #fef08a, #eab308) border-box;
+    }
+
+        .cromo-oro .badge-edicion {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
+    /* 3. Edición Especial / Leyenda / Shiny */
+    .cromo-especial {
+        border: 2px solid #a855f7 !important; /* Morado Eléctrico */
+        background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #c084fc, #a855f7) border-box;
+    }
+
+        .cromo-especial .badge-edicion {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+
+    /* Botones de acción inferiores usando Bootstrap Icons */
+    .btn-action-panel {
+        background-color: #f8fafc;
+        border-top: 1px solid #edf2f7;
+    }
+
+    .action-icon {
+        padding: 8px;
+        border-radius: 8px;
+        color: #64748b;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+        .action-icon:hover {
+            background-color: #f1f5f9;
+            color: #00af50;
+        }
+
+        .action-icon.delete:hover {
+            color: #ef4444;
+            background-color: #fee2e2;
+        }
+</style>
+
+<div class="container py-5">
+
+    <div class="catalog-header p-4 mb-5 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Catálogo de Cromos</h2>
+            <p class="text-muted small m-0">Administración detallada de cromos con foto, edición de mercado y número específico.</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-success px-4 py-2 rounded-3 shadow-sm d-inline-flex align-items-center gap-2">
+                <i data-lucide="user-plus"></i>
+                Crear Cromo
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            // 1. Lógica para determinar el tipo de marco según la edición textualmente
+            string edicionClase = "cromo-estandar";
+            string edicionTexto = item.Edicion?.ToLower() ?? "";
+
+            if (edicionTexto.Contains("oro"))
+            {
+                edicionClase = "cromo-oro";
+            }
+            else if (edicionTexto.Contains("especial") || edicionTexto.Contains("shiny") || edicionTexto.Contains("leyenda"))
+            {
+                edicionClase = "cromo-especial";
+            }
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="cromo-card h-100 @edicionClase">
+
+                    <div class="cromo-img-container">
+                        <span class="badge-number">N° @item.NumeroCromo</span>
+
+                        @if (!string.IsNullOrEmpty(item.FotoUrl))
+                        {
+                            <img src="@item.FotoUrl" class="cromo-img" alt="Cromo de @item.Jugador?.Nombre" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-person-bounding-box text-muted opacity-25" style="font-size: 3rem;"></i>
+                        }
+                    </div>
+
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge badge-edicion px-2 py-1 rounded fw-bold text-uppercase" style="font-size: 0.65rem;">
+                                @item.Edicion
+                            </span>
+                            <span class="fw-bold text-success">
+                                $@string.Format("{0:N2}", item.ValorMercado)
+                            </span>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-1 text-truncate" style="font-size: 1.05rem;">
+                            @(item.Jugador != null ? item.Jugador.Nombre : "Crack Desconocido")
+                        </h5>
+
+                        <p class="text-muted mb-0 text-truncate small d-flex align-items-center gap-1">
+                            <i data-lucide="book-open" style="width: 16px; height: 16px;" class="text-secondary"></i>
+                            @(item.Album != null ? item.Album.Nombre : $"Álbum ID: {item.AlbumId}")
+                        </p>
+                    </div>
+
+                    <div class="btn-action-panel p-2 d-flex justify-content-around align-items-center">
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="action-icon text-decoration-none small d-flex align-items-center gap-1" title="Editar">
+                            <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                            <span style="font-size: 0.8rem;">Editar</span>
+                        </a>
+
+                        <div class="text-black-50 opacity-25">|</div>
+
+                        <a asp-action="Details" asp-route-id="@item.Id" class="action-icon text-decoration-none small d-flex align-items-center gap-1" title="Detalles">
+                            <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                            <span style="font-size: 0.8rem;">Detalles</span>
+                        </a>
+
+                        <div class="text-black-50 opacity-25">|</div>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="action-icon delete text-decoration-none small d-flex align-items-center gap-1" title="Eliminar">
+                            <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                            <span style="font-size: 0.8rem;">Eliminar</span>
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

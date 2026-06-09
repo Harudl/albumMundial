@@ -5,38 +5,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - albumMundial</title>
     <script type="importmap"></script>
+
+    <style>
+        /* Variables basadas en la paleta de la referencia de Dribbble */
+        :root {
+        --bg-main: #0d0e12; /* Fondo ultra oscuro profundo */
+        --bg-card: #16181f; /* Fondo de las secciones y navbar */
+        --bg-hover: #222531; /* Hover de elementos interactivos */
+        --border-color: #262936; /* Bordes finos oscuros */
+        --accent-gold: #ffc107; /* Detalles de campeonatos o advertencias */
+        --text-muted: #8a8f9f; /* Textos secundarios */
+        }
+
+        body {
+        background-color: var(--bg-main);
+        color: #f8f9fa;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        overflow-x: hidden;
+        }
+
+        /* Rediseño completo del Navbar */
+        .custom-navbar {
+        background-color: var(--bg-card) !important;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.85rem 0;
+        }
+
+        .navbar-brand {
+        font-weight: 800;
+        font-size: 1.35rem;
+        letter-spacing: -0.5px;
+        color: #ffffff !important;
+        }
+
+        .navbar-brand span {
+        color: var(--accent-gold);
+        }
+
+        /* Estilo de los links del menú */
+        .custom-nav-link {
+        color: var(--text-muted) !important;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        }
+
+        .custom-nav-link:hover {
+        color: #ffffff !important;
+        background-color: var(--bg-hover);
+        }
+
+        /* Link Activo basado en el controlador de ASP.NET Core */
+        .custom-nav-link.active-page {
+        color: #ffffff !important;
+        background-color: var(--bg-hover);
+        border: 1px solid var(--border-color);
+        }
+
+        /* Footer estilizado */
+        .custom-footer {
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        }
+
+        .custom-footer a {
+        color: #ffffff;
+        text-decoration: none;
+        }
+
+        .custom-footer a:hover {
+        text-decoration: underline;
+        }
+    </style>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/albumMundial.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">albumMundial</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-md navbar-dark custom-navbar sticky-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                    <span>🏆</span> album<span class="text-white">Mundial</span>
+                </a>
+
+                <button class="navbar-dark navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto gap-1 mt-3 mt-md-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active-page" : "")" asp-controller="Home" asp-action="Index">
+                                <i data-lucide="home" style="width: 18px; height: 18px;"></i> Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pais" asp-action="Index">Pais</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Pais" ? "active-page" : "")" asp-controller="Pais" asp-action="Index">
+                                <i data-lucide="globe" style="width: 18px; height: 18px;"></i> País
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Equipo" asp-action="Index">Equipos</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipo" ? "active-page" : "")" asp-controller="Equipo" asp-action="Index">
+                                <i data-lucide="shield" style="width: 18px; height: 18px;"></i> Equipos
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jugadores" asp-action="Index">Jugadores</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Jugador" ? "active-page" : "")" asp-controller="Jugadores" asp-action="Index">
+                                <i data-lucide="users" style="width: 18px; height: 18px;"></i> Jugadores
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Album" asp-action="Index">Album</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Album" ? "active-page" : "")" asp-controller="Album" asp-action="Index">
+                                <i data-lucide="book-open" style="width: 18px; height: 18px;"></i> Álbum
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cromo" asp-action="Index">Cromo</a>
+                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cromos" ? "active-page" : "")" asp-controller="Cromos" asp-action="Index">
+                                <i data-lucide="layers" style="width: 18px; height: 18px;"></i> Cromos
+                            </a>
                         </li>
                     </ul>
         </nav>
@@ -47,15 +142,28 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - albumMundial - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="custom-footer py-4 mt-auto">
+        <div class="container text-center text-md-between d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <div>
+                &copy; 2026 - <span class="text-white fw-bold">albumMundial</span>. Todos los derechos reservados.
+            </div>
+            <div class="d-flex gap-3">
+                <a asp-controller="Home" asp-action="Privacy">Privacidad</a>
+                <span class="text-muted">|</span>
+                <a href="#">Soporte</a>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
 </div>
