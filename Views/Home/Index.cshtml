@@ -6,24 +6,33 @@
 
 <style>
     :root {
-        --card-bg: #16181f;
-        --border-color: #262936;
+        /* Mantenemos tus variables del UI Kit */
+        --card-bg: rgba(22, 24, 31, 0.85); /* 👈 Cambiado a semi-transparente para un efecto Glassmorphism brutal */
+        --border-color: rgba(38, 41, 54, 0.7);
         --accent-yellow: #ffc107;
         --accent-purple: #8b5cf6;
-        --text-secondary: #8a8f9f;
+        --text-secondary: #a0a5b5;
     }
 
+    /* 🟢 INYECCIÓN DEL FONDO GLOBAL CON CAPA OSCURA */
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* Contenedor tipo Widget del UI Kit */
     .sports-widget {
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.25rem;
         height: 100%;
+        backdrop-filter: blur(8px); /* 👈 Efecto difuminado moderno sobre el fondo de la cancha */
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
         .sports-widget:hover {
-            border-color: #3b3f54;
+            border-color: #4c526d;
             transform: translateY(-2px);
         }
 
@@ -41,7 +50,7 @@
 
     /* Diseño para los mini-cromos dinámicos */
     .mini-cromo-item {
-        background: linear-gradient(135deg, #1e2029 0%, #16181f 100%);
+        background: linear-gradient(135deg, rgba(30, 32, 41, 0.9) 0%, rgba(22, 24, 31, 0.9) 100%);
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 0.75rem;
@@ -75,17 +84,18 @@
         overflow: hidden;
     }
 
+    /* 🟢 AHORA EL HERO ES TRANSPARENTE PARA DEJAR VER EL ESTADÍO DE FONDO */
     .hero-sports-card {
-        background: linear-gradient(180deg, rgba(22,24,31,0.3) 0%, rgba(13,14,18,0.95) 100%), url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80');
-        background-size: cover;
-        background-position: center center;
+        background: rgba(22, 24, 31, 0.5);
         border: 1px solid var(--border-color);
+        backdrop-filter: blur(4px);
         border-radius: 16px;
         padding: 2.5rem 2rem;
         min-height: 320px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
+        height: 100%;
     }
 </style>
 
@@ -96,14 +106,14 @@
             <div>
                 <span class="badge bg-warning text-dark text-uppercase fw-bold mb-2 px-2.5 py-1.5" style="font-size: 0.75rem;">World Cup Edition</span>
                 <h1 class="display-5 fw-extrabold text-white mb-2 text-uppercase tracking-tight">Temporada de Fichajes Abierta</h1>
-                <p class="text-white-50 max-width-500 mb-4" style="font-size: 1rem;">
+                <p class="text-white mb-4" style="font-size: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.6);">
                     Administra el mercado de transferencias, escanea nuevos ejemplares y completa las escuadras de las naciones globales.
                 </p>
                 <div class="d-flex gap-2">
-                    <a asp-controller="Cromos" asp-action="Index" class="btn btn-light btn-sm fw-bold px-3 py-2 rounded-2 d-flex align-items-center gap-1">
+                    <a asp-controller="Cromos" asp-action="Index" class="btn btn-light btn-sm fw-bold px-3 py-2 rounded-2 d-flex align-items-center gap-1 shadow">
                         <i data-lucide="layout-grid" style="width: 16px; height: 16px;"></i> Explorar Catálogo
                     </a>
-                    <a asp-controller="Cromos" asp-action="Create" class="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-2 border-secondary">
+                    <a asp-controller="Cromos" asp-action="Create" class="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-2 border-secondary text-white shadow">
                         + Registrar Cromo
                     </a>
                 </div>
@@ -112,14 +122,14 @@
     </div>
 
     <div class="col-lg-5">
-        <div class="sports-widget">
+        <div class="sports-widget shadow-lg">
             <div class="widget-title">
                 <i data-lucide="pie-chart" class="text-warning" style="width: 16px; height: 16px;"></i> Resumen de Estadísticas Básicas
             </div>
 
             <div class="text-center my-3">
-                <h2 class="display-4 fw-bold m-0 text-white">@Model.TotalCromos</h2>
-                <p class="text-muted small">Cromos en tu posesión actual</p>
+                <h2 class="display-4 fw-bold m-0 text-white" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5);">@Model.TotalCromos</h2>
+                <p class="text-light small opacity-75">Cromos en tu posesión actual</p>
             </div>
 
             <div class="space-y-3 mt-2">
@@ -157,7 +167,7 @@
     </div>
 
     <div class="col-12 mt-2">
-        <div class="sports-widget">
+        <div class="sports-widget shadow-lg">
             <div class="widget-title d-flex justify-content-between align-items-center">
                 <span class="d-flex align-items-center gap-2">
                     <i data-lucide="clock" class="text-info" style="width: 16px; height: 16px;"></i> Últimas Adiciones al Álbum Digital
@@ -172,7 +182,7 @@
                     {
                         <div class="col">
                             <div class="mini-cromo-item">
-                                <div class="mini-cromo-img-container">
+                                <div class="mini-cromo-img-container shadow-sm">
                                     @if (!string.IsNullOrEmpty(item.FotoUrl))
                                     {
                                         <img src="@item.FotoUrl" class="mini-cromo-img" alt="Foto @item.Jugador?.Nombre" />
@@ -206,5 +216,4 @@
             </div>
         </div>
     </div>
-
 </div>
