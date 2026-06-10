@@ -6,12 +6,9 @@
 
 <h1>Jugadores</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<a class="btn btn-success" asp-action="Create">Nuevo</a>
+
 <form asp-action="Index" method="get" class="form-inline mb-3">
     <div class="form-group">
         <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Búsqueda por Nombre o pais ..." />
