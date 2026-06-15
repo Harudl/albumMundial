@@ -110,10 +110,10 @@
                     Administra el mercado de transferencias, escanea nuevos ejemplares y completa las escuadras de las naciones globales.
                 </p>
                 <div class="d-flex gap-2">
-                    <a asp-controller="Cromos" asp-action="Index" class="btn btn-light btn-sm fw-bold px-3 py-2 rounded-2 d-flex align-items-center gap-1 shadow">
+                    <a asp-controller="Cromos" data-ajax="true" asp-action="Index" class="btn btn-light btn-sm fw-bold px-3 py-2 rounded-2 d-flex align-items-center gap-1 shadow">
                         <i data-lucide="layout-grid" style="width: 16px; height: 16px;"></i> Explorar Catálogo
                     </a>
-                    <a asp-controller="Cromos" asp-action="Create" class="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-2 border-secondary text-white shadow">
+                    <a asp-controller="Cromos" data-ajax="true" asp-action="Create" class="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-2 border-secondary text-white shadow">
                         + Registrar Cromo
                     </a>
                 </div>
@@ -172,7 +172,7 @@
                 <span class="d-flex align-items-center gap-2">
                     <i data-lucide="clock" class="text-info" style="width: 16px; height: 16px;"></i> Últimas Adiciones al Álbum Digital
                 </span>
-                <a asp-controller="Cromos" asp-action="Index" class="text-decoration-none text-warning small fw-semibold">Ver todos →</a>
+                <a asp-controller="Cromos" data-ajax="true" asp-action="Index" class="text-decoration-none text-warning small fw-semibold">Ver todos →</a>
             </div>
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">

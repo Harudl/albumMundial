@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,11 +17,18 @@
         --text-muted: #8a8f9f; /* Textos secundarios */
         }
 
+        /* Estructura Flexbox para asegurar que el footer responda correctamente */
+        html, body {
+        height: 100%;
+        }
+
         body {
         background-color: var(--bg-main);
         color: #f8f9fa;
         font-family: 'Plus Jakarta Sans', sans-serif;
         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
         }
 
         /* Rediseño completo del Navbar */
@@ -67,21 +74,195 @@
         border: 1px solid var(--border-color);
         }
 
-        /* Footer estilizado */
+        /* CONTENEDOR PRINCIPAL FLUIDO */
+        .main-wrapper {
+        flex: 1 0 auto;
+        }
+
+        /* NUEVO DISEÑO DE FOOTER (Efecto Cristal Moderno sobre el Estadio) */
         .custom-footer {
-        background-color: var(--bg-card);
-        border-top: 1px solid var(--border-color);
+        background: rgba(22, 24, 31, 0.8) !important; /* Semitransparente */
+        backdrop-filter: blur(12px); /* Efecto vidrio esmerilado */
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
         color: var(--text-muted);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        z-index: 10;
         }
 
         .custom-footer a {
         color: #ffffff;
         text-decoration: none;
+        transition: color 0.2s;
         }
 
         .custom-footer a:hover {
-        text-decoration: underline;
+        color: var(--accent-gold);
+        }
+
+        /* --- REPRODUCTOR DE MÚSICA PREMIUM ESTILO PES --- */
+        .pes-music-player {
+        position: fixed;
+        bottom: 85px; /* Por encima del footer */
+        left: 25px;
+        background: rgba(16, 24, 39, 0.85); /* Azul oscuro traslúcido tipo PES */
+        border-left: 4px solid var(--accent-gold);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 18px;
+        border-radius: 0 12px 12px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 999;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition: all 0.3s ease;
+        width: 320px;
+        }
+
+        /* Fila Superior: Info del tema y Controles Básicos */
+        .pes-player-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        }
+
+        .pes-track-info {
+        display: flex;
+        flex-direction: column;
+        max-width: 160px;
+        }
+
+        .pes-track-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        }
+
+        .pes-track-artist {
+        font-size: 0.7rem;
+        color: var(--accent-gold);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 500;
+        }
+
+        .pes-controls {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        }
+
+        .pes-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 6px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .pes-btn:hover {
+        color: #ffffff;
+        background: var(--bg-hover);
+        }
+
+        .pes-btn.active {
+        color: var(--accent-gold);
+        }
+
+        /* Fila Inferior: Progreso de la canción */
+        .pes-player-bottom {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        font-family: monospace; /* Estilo marcador deportivo */
+        }
+
+        .pes-progress-container {
+        flex: 1;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+        }
+
+        .pes-progress-bar {
+        height: 100%;
+        background: #ffffff;
+        width: 0%;
+        border-radius: 2px;
+        position: relative;
+        transition: width 0.1s linear;
+        }
+
+        /* Contenedor de Volumen Flotante / Desplegable */
+        .pes-volume-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+        }
+
+        /* El slider de volumen empieza oculto y se muestra elegantemente al hacer hover en su zona */
+        .pes-volume-slider-wrapper {
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        }
+
+        .pes-volume-container:hover .pes-volume-slider-wrapper {
+        width: 70px; /* Ancho al desplegarse */
+        }
+
+        .pes-volume-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        outline: none;
+        cursor: pointer;
+        }
+
+        .pes-volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-gold);
+        cursor: pointer;
+        }
+
+        .pes-volume-slider::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent-gold);
+        cursor: pointer;
+        border: none;
         }
     </style>
 
@@ -90,59 +271,112 @@
     <link rel="stylesheet" href="~/albumMundial.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark custom-navbar sticky-top shadow-sm">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
-                    <span>🏆</span> album<span class="text-white">Mundial</span>
-                </a>
 
-                <button class="navbar-dark navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <div class="main-wrapper">
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark custom-navbar sticky-top shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                        <span>🏆</span> album<span class="text-white">Mundial</span>
+                    </a>
 
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav ms-auto gap-1 mt-3 mt-md-0">
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active-page" : "")" asp-controller="Home" asp-action="Index">
-                                <i data-lucide="home" style="width: 18px; height: 18px;"></i> Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Pais" ? "active-page" : "")" asp-controller="Pais" asp-action="Index">
-                                <i data-lucide="globe" style="width: 18px; height: 18px;"></i> País
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipo" ? "active-page" : "")" asp-controller="Equipo" asp-action="Index">
-                                <i data-lucide="shield" style="width: 18px; height: 18px;"></i> Equipos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Jugador" ? "active-page" : "")" asp-controller="Jugadores" asp-action="Index">
-                                <i data-lucide="users" style="width: 18px; height: 18px;"></i> Jugadores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Album" ? "active-page" : "")" asp-controller="Albums" asp-action="Index">
-                                <i data-lucide="book-open" style="width: 18px; height: 18px;"></i> Álbum
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cromos" ? "active-page" : "")" asp-controller="Cromos" asp-action="Index">
-                                <i data-lucide="layers" style="width: 18px; height: 18px;"></i> Cromos
-                            </a>
-                        </li>
-                    </ul>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+                    <button class="navbar-dark navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="mainNavbar">
+                        <ul class="navbar-nav ms-auto gap-1 mt-3 mt-md-0">
+                           
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cromos" ? "active-page" : "")"
+                                   asp-controller="Home"
+                                   asp-action="Index"
+                                   data-ajax="true">
+                                    <i data-lucide="layers" style="width: 18px; height: 18px;"></i> Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Pais" ? "active-page" : "")" asp-controller="Pais" asp-action="Index">
+                                    <i data-lucide="globe" style="width: 18px; height: 18px;"></i> País
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Equipo" ? "active-page" : "")" asp-controller="Equipo" asp-action="Index">
+                                    <i data-lucide="shield" style="width: 18px; height: 18px;"></i> Equipos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Jugador" ? "active-page" : "")" asp-controller="Jugadores" asp-action="Index">
+                                    <i data-lucide="users" style="width: 18px; height: 18px;"></i> Jugadores
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Album" ? "active-page" : "")" asp-controller="Albums" asp-action="Index">
+                                    <i data-lucide="book-open" style="width: 18px; height: 18px;"></i> Álbum
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="custom-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Cromos" ? "active-page" : "")"
+                                   asp-controller="Cromos"
+                                   asp-action="Index"
+                                   data-ajax="true">
+                                    <i data-lucide="layers" style="width: 18px; height: 18px;"></i> Cromos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container mt-4">
+            <main role="main" class="pb-3" id="main-content">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="custom-footer py-4 mt-auto">
+    <div class="pes-music-player">
+        <audio id="pes-audio" autoplay></audio>
+
+        <div class="pes-player-top">
+            <div class="pes-track-info">
+                <span class="pes-track-title" id="track-title">Cargando Tema...</span>
+                <span class="pes-track-artist" id="track-artist">PES OTS</span>
+            </div>
+
+            <div class="pes-controls">
+                <button class="pes-btn" id="btn-prev" title="Anterior">
+                    <i data-lucide="skip-back" style="width: 15px; height: 15px;"></i>
+                </button>
+                <button class="pes-btn" id="btn-play" title="Reproducir/Pausar">
+                    <i data-lucide="play" id="play-icon" style="width: 15px; height: 15px;"></i>
+                </button>
+                <button class="pes-btn" id="btn-next" title="Siguiente">
+                    <i data-lucide="skip-forward" style="width: 15px; height: 15px;"></i>
+                </button>
+
+                <div class="pes-volume-container">
+                    <button class="pes-btn" id="btn-mute" title="Silenciar">
+                        <i data-lucide="volume-2" id="volume-icon" style="width: 15px; height: 15px;"></i>
+                    </button>
+                    <div class="pes-volume-slider-wrapper">
+                        <input type="range" class="pes-volume-slider" id="volume-control" min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pes-player-bottom">
+            <span id="time-current">0:00</span>
+            <div class="pes-progress-container" id="progress-container">
+                <div class="pes-progress-bar" id="progress-bar"></div>
+            </div>
+            <span id="time-total">0:00</span>
+        </div>
+    </div>
+
+    <footer class="custom-footer py-4">
         <div class="container text-center text-md-between d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
             <div>
                 &copy; 2026 - <span class="text-white fw-bold">albumMundial</span>. Todos los derechos reservados.
@@ -154,17 +388,283 @@
             </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+        // Inicializar Iconos Lucide
         lucide.createIcons();
+
+        // --- Lista de Canciones ---
+        const playlist = [
+        { title: "Ai Se Eu Te Pego", artist: "Michael Telo", src: "/music/Michel_Telo_Ai_Se_Eu_Te_Pego.mp3" },
+        { title: "Dreamers", artist: "Savoir Adore", src: "/music/Savoir_Adore_Dreamers.mp3" },
+        { title: "On Top Of The World", artist: "Imagine Dragons", src: "/music/Imagine_Dragons_On_Top_Of_The_World.mp3" }
+        ];
+
+        // --- Recuperar Estados guardados (Tratamiento estricto de strings a booleanos) ---
+        let currentTrackIndex = parseInt(localStorage.getItem("pes_track_index")) || 0;
+        let savedTime = parseFloat(localStorage.getItem("pes_track_time")) || 0;
+
+        // Forzamos a verificar explícitamente si la cadena es "true"
+        let isPlaying = localStorage.getItem("pes_is_playing") === "true";
+        let lastVolume = parseFloat(localStorage.getItem("pes_volume")) || 0.1;
+        let isMuted = localStorage.getItem("pes_is_muted") === "true";
+
+        // Captura de elementos DOM
+        const audio = document.getElementById("pes-audio");
+        const btnPlay = document.getElementById("btn-play");
+        const btnPrev = document.getElementById("btn-prev");
+        const btnNext = document.getElementById("btn-next");
+        const btnMute = document.getElementById("btn-mute");
+        const volumeControl = document.getElementById("volume-control");
+
+        const trackTitle = document.getElementById("track-title");
+        const trackArtist = document.getElementById("track-artist");
+
+        const progressBar = document.getElementById("progress-bar");
+        const progressContainer = document.getElementById("progress-container");
+        const timeCurrent = document.getElementById("time-current");
+        const timeTotal = document.getElementById("time-total");
+
+        // Configurar volumen inicial
+        audio.volume = isMuted ? 0 : lastVolume;
+        volumeControl.value = lastVolume;
+
+        // Cargar la pista correspondiente
+        function loadTrack(index, startTime = 0) {
+        if (index >= playlist.length) index = 0;
+        const track = playlist[index];
+        audio.src = track.src;
+        trackTitle.textContent = track.title;
+        trackArtist.textContent = track.artist;
+        progressBar.style.width = '0%';
+        timeCurrent.textContent = "0:00";
+
+        audio.currentTime = startTime;
+        localStorage.setItem("pes_track_index", index);
+        }
+
+        function updatePlayIcon(playing) {
+        const icon = document.getElementById("play-icon");
+        if (playing) {
+        icon.setAttribute("data-lucide", "pause");
+        } else {
+        icon.setAttribute("data-lucide", "play");
+        }
+        lucide.createIcons();
+        }
+
+        // Intentar reproducir música de forma controlada
+        function startPlayback() {
+        // VALIDACIÓN CLAVE: Si el storage dice explícitamente "false", abortamos todo y limpiamos el listener
+        if (localStorage.getItem("pes_is_playing") === "false") {
+        document.removeEventListener('click', startPlayback);
+        audio.pause();
+        updatePlayIcon(false);
+        return;
+        }
+
+        audio.play()
+        .then(() => {
+        isPlaying = true;
+        localStorage.setItem("pes_is_playing", "true");
+        updatePlayIcon(true);
+        document.removeEventListener('click', startPlayback);
+        })
+        .catch(error => {
+        console.log("Autoplay bloqueado. Esperando interacción.");
+        });
+        }
+
+        function togglePlay() {
+        // Destruir el listener general inmediatamente en cuanto el usuario tome el control manual
+        document.removeEventListener('click', startPlayback);
+
+        if (audio.paused) {
+        audio.play().then(() => {
+        isPlaying = true;
+        localStorage.setItem("pes_is_playing", "true");
+        updatePlayIcon(true);
+        });
+        } else {
+        audio.pause();
+        isPlaying = false;
+        localStorage.setItem("pes_is_playing", "false");
+        updatePlayIcon(false);
+        }
+        }
+
+        function formatTime(secs) {
+        if (isNaN(secs)) return "0:00";
+        const minutes = Math.floor(secs / 60);
+        const seconds = Math.floor(secs % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        audio.addEventListener("timeupdate", function() {
+        if (audio.duration) {
+        const percentage = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = `${percentage}%`;
+        timeCurrent.textContent = formatTime(audio.currentTime);
+        localStorage.setItem("pes_track_time", audio.currentTime);
+        }
+        });
+
+        audio.addEventListener("loadedmetadata", function() {
+        timeTotal.textContent = formatTime(audio.duration);
+        });
+
+        progressContainer.addEventListener("click", function(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        if (duration) {
+        audio.currentTime = (clickX / width) * duration;
+        }
+        });
+
+        volumeControl.addEventListener("input", function() {
+        audio.volume = this.value;
+        lastVolume = this.value;
+        isMuted = (this.value == 0);
+        localStorage.setItem("pes_volume", lastVolume);
+        localStorage.setItem("pes_is_muted", isMuted);
+        updateVolumeIcon();
+        });
+
+        btnMute.addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (isMuted) {
+        audio.volume = lastVolume;
+        volumeControl.value = lastVolume;
+        isMuted = false;
+        } else {
+        audio.volume = 0;
+        volumeControl.value = 0;
+        isMuted = true;
+        }
+        localStorage.setItem("pes_is_muted", isMuted);
+        updateVolumeIcon();
+        });
+
+        function updateVolumeIcon() {
+        const icon = document.getElementById("volume-icon");
+        if (isMuted || audio.volume === 0) {
+        icon.setAttribute("data-lucide", "volume-x");
+        } else if (audio.volume < 0.5) {
+        icon.setAttribute("data-lucide", "volume-1");
+        } else {
+        icon.setAttribute("data-lucide", "volume-2");
+        }
+        lucide.createIcons();
+        }
+
+        // Controles de navegación (Ahora también matan el listener de inicio automático por seguridad)
+        btnPlay.addEventListener("click", function(e) { e.stopPropagation(); togglePlay(); });
+
+        btnNext.addEventListener("click", function(e) {
+        e.stopPropagation();
+        document.removeEventListener('click', startPlayback);
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex, 0);
+
+        // Mantener el estado actual: si estaba pausado no forzar play
+        if (localStorage.getItem("pes_is_playing") === "true") {
+        audio.play().then(() => updatePlayIcon(true));
+        } else {
+        updatePlayIcon(false);
+        }
+        });
+
+        btnPrev.addEventListener("click", function(e) {
+        e.stopPropagation();
+        document.removeEventListener('click', startPlayback);
+        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+        loadTrack(currentTrackIndex, 0);
+
+        if (localStorage.getItem("pes_is_playing") === "true") {
+        audio.play().then(() => updatePlayIcon(true));
+        } else {
+        updatePlayIcon(false);
+        }
+        });
+
+        audio.addEventListener("ended", function() {
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex, 0);
+        audio.play().then(() => updatePlayIcon(true));
+        });
+
+        // --- EJECUCIÓN INICIAL ESTABLE ---
+        loadTrack(currentTrackIndex, savedTime);
+        updateVolumeIcon();
+
+        // Función que se ejecuta en el milisegundo exacto del clic en el menú
+        function handleMenuClick(e) {
+        // Si está en null (primera vez) o es "true", activamos la música para la siguiente pestaña
+        if (localStorage.getItem("pes_is_playing") !== "false") {
+        localStorage.setItem("pes_is_playing", "true");
+        isPlaying = true;
+
+        audio.play()
+        .then(() => updatePlayIcon(true))
+        .catch(() => {
+        console.log("Audio preparado para la siguiente pestaña...");
+        });
+        }
+        }
+
+        // Asigna el evento de clic a todos los enlaces del menú
+        function setupMenuLinksListener() {
+        const menuLinks = document.querySelectorAll(".custom-nav-link");
+        menuLinks.forEach(link => {
+        link.addEventListener("mousedown", handleMenuClick);
+        link.addEventListener("click", handleMenuClick);
+        });
+        }
+
+        // Limpia los eventos del menú
+        function removeMenuLinksListener() {
+        const menuLinks = document.querySelectorAll(".custom-nav-link");
+        menuLinks.forEach(link => {
+        link.removeEventListener("mousedown", handleMenuClick);
+        link.removeEventListener("click", handleMenuClick);
+        });
+        }
+
+        // --- LÓGICA DE CONTROL DE ARRANQUE CORREGIDA ---
+        const currentStatus = localStorage.getItem("pes_is_playing");
+
+        if (currentStatus === "false") {
+        // El usuario explícitamente pausó el reproductor: silencio absoluto
+        removeMenuLinksListener();
+        audio.pause();
+        updatePlayIcon(false);
+        } else {
+        // CASO: Primera vez en la web (null) O el estado es "true"
+        setupMenuLinksListener(); // Activamos los enlaces para que capturen el primer clic
+
+        if (currentStatus === "true") {
+        updatePlayIcon(true);
+        audio.play()
+        .then(() => {
+        localStorage.setItem("pes_is_playing", "true");
+        })
+        .catch(() => {
+        console.log("Autoplay retenido. Los enlaces del menú activarán el audio al navegar.");
+        });
+        } else {
+        // Si es la primera vez que entra (null), mostramos el icono de play listo
+        updatePlayIcon(false);
+        }
+        }
         });
     </script>
 </body>
 </html>
-</div>
-</div>

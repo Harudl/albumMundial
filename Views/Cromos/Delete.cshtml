@@ -5,24 +5,42 @@
 }
 
 <style>
-    body {
-        background-color: #f4f6f9;
-        color: #1e293b;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-red: #f87171;
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
     }
 
+    /* 🟢 FONDO GLOBAL CON CAPA OSCURA */
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* Alerta de Peligro Estilizada al UI Kit */
+    .alert-danger-dark {
+        background-color: rgba(220, 38, 38, 0.15) !important;
+        border: 1px solid rgba(220, 38, 38, 0.4) !important;
+        color: #fca5a5 !important;
+        backdrop-filter: blur(8px);
+    }
+
+    /* Panel de Cristal Central */
     .card-delete-panel {
-        border: 1px solid #fee2e2; /* Borde rojo suave */
+        border: 1px solid var(--border-color);
         border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.05);
-        background-color: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        background-color: var(--card-bg);
+        backdrop-filter: blur(12px);
         overflow: hidden;
     }
 
-    /* Contenedor del Cromo a Eliminar */
+    /* Contenedor del Cromo a Eliminar (Look Fantasma) */
     .cromo-delete-container {
-        border: 1px solid #e2e8f0;
-        background-color: #f8fafc;
+        border: 1px solid rgba(248, 113, 113, 0.3);
+        background-color: rgba(10, 11, 14, 0.6);
         border-radius: 14px;
         width: 100%;
         max-width: 260px;
@@ -32,34 +50,35 @@
         justify-content: center;
         overflow: hidden;
         position: relative;
-        opacity: 0.85; /* Sutil opacidad por estar en modo eliminación */
+        opacity: 0.65; /* Apariencia fantasmal porque va a desaparecer 👻 */
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
     }
 
     .cromo-delete-img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        background-color: #edf2f7;
+        object-fit: cover;
     }
 
     .badge-delete-number {
         position: absolute;
         top: 14px;
         left: 14px;
-        background-color: #0f172a;
+        background-color: rgba(15, 17, 23, 0.9);
         color: #ffffff;
-        font-weight: 700;
+        border: 1px solid rgba(248, 113, 113, 0.4);
+        font-weight: 800;
         padding: 4px 10px;
         border-radius: 6px;
         font-size: 0.75rem;
         z-index: 10;
     }
 
-    /* Ficha resumida de datos */
+    /* Ficha técnica de borrado */
     .info-label {
         font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
+        color: var(--text-secondary);
+        text-uppercase: uppercase;
         font-size: 0.7rem;
         letter-spacing: 0.8px;
         margin-bottom: 1px;
@@ -67,42 +86,45 @@
 
     .info-value {
         font-size: 1.05rem;
-        font-weight: 600;
-        color: #0f172a;
+        font-weight: 700;
+        color: #ffffff;
     }
 
     .info-box-delete {
-        background-color: #fff5f5; /* Fondo rojizo muy sutil */
-        border: 1px solid #fde8e8;
+        background-color: rgba(13, 14, 18, 0.6);
+        border: 1px solid rgba(239, 68, 68, 0.25);
         border-radius: 12px;
-        padding: 10px 14px;
+        padding: 12px 16px;
     }
 
-    /* Botón de eliminación destructiva masiva */
+    /* Botón Destructivo Custom Premium */
     .btn-danger-custom {
-        background-color: #ef4444;
+        background-color: #dc2626;
         color: white;
-        font-weight: 600;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
         border: none;
         padding: 12px 24px;
         border-radius: 8px;
-        transition: all 0.2s;
+        transition: all 0.2s ease;
     }
 
         .btn-danger-custom:hover {
-            background-color: #dc2626;
+            background-color: #b91c1c;
             color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
         }
 
     .link-back {
-        color: #64748b;
+        color: var(--text-secondary);
         font-weight: 600;
         transition: color 0.2s;
     }
 
         .link-back:hover {
-            color: #00af50;
+            color: var(--accent-yellow);
         }
 </style>
 
@@ -110,68 +132,74 @@
     <div class="row justify-content-center">
         <div class="col-lg-9">
 
-            <div class="alert alert-danger d-flex align-items-center gap-2 rounded-3 mb-4 p-3 shadow-sm" role="alert">
-                <i data-lucide="alert-triangle" style="width: 24px; height: 24px;" class="flex-shrink-0"></i>
+            <div class="alert alert-danger-dark d-flex align-items-center gap-3 rounded-3 mb-4 p-3 shadow-lg" role="alert">
+                <i data-lucide="alert-triangle" style="width: 28px; height: 28px; color: #f87171;" class="flex-shrink-0"></i>
                 <div>
-                    <h5 class="alert-heading fw-bold m-0" style="font-size: 1.05rem;">¿Confirmas que deseas eliminar este registro?</h5>
-                    <p class="m-0 small text-danger-emphasis">Esta acción es permanente y removerá por completo el cromo del sistema de inventario.</p>
+                    <h5 class="alert-heading fw-bold m-0" style="font-size: 1.1rem;">¿Confirmas que deseas eliminar este registro?</h5>
+                    <p class="m-0 small opacity-90">Esta acción es permanente y removerá por completo al jugador y su estampa del inventario del sistema.</p>
                 </div>
             </div>
 
             <div class="card card-delete-panel p-4 p-sm-5">
                 <div class="row g-4 align-items-center">
 
-                    @* SECCIÓN IZQUIERDA: FOTO DEL CROMO *@
+                    @* SECCIÓN IZQUIERDA: CONTENEDOR FANTASMA DEL CROMO *@
                     <div class="col-md-4 d-flex justify-content-center">
                         <div class="cromo-delete-container">
                             <span class="badge-delete-number">N° @Model.NumeroCromo</span>
 
                             @if (!string.IsNullOrEmpty(Model.FotoUrl))
                             {
-                                <img src="@Model.FotoUrl" class="cromo-delete-img" alt="Cromo" />
+                                <img src="@Model.FotoUrl" class="cromo-delete-img" alt="Cromo a borrar" />
                             }
                             else
                             {
-                                <i data-lucide="user" style="width: 48px; height: 48px;" class="text-muted opacity-25"></i>
+                                <i data-lucide="user" style="width: 48px; height: 48px;" class="text-white opacity-25"></i>
                             }
                         </div>
                     </div>
 
-                    @* SECCIÓN DERECHA: DATOS CLAVE Y FORMULARIO POST *@
+                    @* SECCIÓN DERECHA: VERIFICACIÓN DE ATRIBUTOS Y SUBMIT *@
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <span class="badge bg-secondary-subtle text-secondary px-2 py-1 rounded fw-bold text-uppercase mb-1" style="font-size: 0.65rem;">
+                            <span class="badge text-uppercase px-2 py-1 rounded fw-extrabold mb-2"
+                                  style="background-color: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.15); font-size: 0.65rem;">
                                 Edición @Model.Edicion
                             </span>
-                            <h3 class="fw-bold text-dark m-0">
+                            <h2 class="fw-extrabold text-white m-0" style="font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
                                 @(Model.Jugador?.Nombre ?? "Crack Desconocido")
-                            </h3>
-                            <p class="text-muted small mb-0">Asociado al álbum: @(Model.Album?.Nombre ?? "Sin Asignar")</p>
+                            </h2>
+                            <p class="small mb-0 mt-1" style="color: var(--text-secondary);">
+                                <i data-lucide="book-open" class="d-inline-block text-info me-1" style="width: 14px; height: 14px;"></i>
+                                Álbum asignado: <span class="text-white fw-semibold">@(Model.Album?.Nombre ?? "Sin Asignar")</span>
+                            </p>
                         </div>
 
                         <div class="row g-2 mb-4">
-                            <div class="col-sm-6">
-                                <div class="info-box-delete d-flex align-items-center gap-2">
-                                    <i data-lucide="dollar-sign" style="width: 18px; height: 18px;" class="text-danger"></i>
+                            <div class="col-sm-7">
+                                <div class="info-box-delete d-flex align-items-center gap-3">
+                                    <div class="text-danger bg-danger bg-opacity-20 p-2 rounded-3">
+                                        <i data-lucide="dollar-sign" style="width: 18px; height: 18px;"></i>
+                                    </div>
                                     <div>
-                                        <div class="info-label">Valor de Mercado</div>
-                                        <div class="info-value text-danger" style="font-size: 1rem;">$@string.Format("{0:N2}", Model.ValorMercado)</div>
+                                        <div class="info-label">Pérdida de Valor de Mercado</div>
+                                        <div class="info-value text-danger" style="font-size: 1.15rem;">$@string.Format("{0:N2}", Model.ValorMercado)</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <hr class="text-muted opacity-25 mb-4" />
+                        <hr class="border-secondary opacity-25 mb-4" />
 
                         <form asp-action="Delete">
                             <input type="hidden" asp-for="Id" />
 
-                            <div class="d-flex flex-wrap align-items-center gap-3">
-                                <button type="submit" class="btn btn-danger-custom d-inline-flex align-items-center gap-2">
+                            <div class="d-flex flex-wrap align-items-center gap-4">
+                                <button type="submit" class="btn btn-danger-custom d-inline-flex align-items-center gap-2 shadow">
                                     <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i> Eliminar Definitivamente
                                 </button>
 
-                                <a asp-action="Index" class="text-decoration-none link-back small d-inline-flex align-items-center gap-1">
+                                <a asp-action="Index" data-ajax="true" class="text-decoration-none link-back small d-inline-flex align-items-center gap-1">
                                     Cancelar y Volver
                                 </a>
                             </div>

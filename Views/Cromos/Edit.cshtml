@@ -5,40 +5,58 @@
 }
 
 <style>
-    body {
-        background-color: #f4f6f9;
-        color: #1e293b;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --accent-purple: #a855f7;
+        --text-secondary: #cbd5e1;
     }
 
-    .card-dashboard-light {
-        border: 1px solid #e2e8f0;
+    /* 🟢 FONDO GLOBAL CON CAPA OSCURA */
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* Contenedor Principal con Efecto Glassmorphism */
+    .card-dashboard-dark {
+        border: 1px solid var(--border-color);
         border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(30, 41, 59, 0.05);
-        background-color: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        background-color: var(--card-bg);
+        backdrop-filter: blur(12px);
     }
 
     .form-label {
         font-weight: 700;
-        color: #475569;
-        text-transform: uppercase;
+        color: var(--text-secondary);
+        text-uppercase: uppercase;
         font-size: 0.75rem;
         letter-spacing: 0.8px;
     }
 
-    .form-control-light {
-        background-color: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #0f172a !important;
+    /* Inputs, Selects y Elementos de Formulario Oscuros Premium */
+    .form-control-dark {
+        background-color: rgba(13, 14, 18, 0.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
         border-radius: 8px;
         padding: 10px 14px;
         transition: all 0.2s ease;
     }
 
-        .form-control-light:focus {
-            background-color: #ffffff !important;
-            border-color: #00af50 !important;
-            box-shadow: 0 0 0 3px rgba(0, 175, 80, 0.15) !important;
+        .form-control-dark:focus {
+            background-color: rgba(13, 14, 18, 0.8) !important;
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2) !important;
+            color: #fff !important;
+        }
+
+        /* Opción para corregir las letras de los select tags en navegadores */
+        .form-control-dark option {
+            background-color: #16181f;
+            color: #fff;
         }
 
     /* Vista previa de la imagen actual */
@@ -46,27 +64,27 @@
         width: 100%;
         max-width: 180px;
         aspect-ratio: 3 / 4;
-        border: 2px solid #e2e8f0;
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         overflow: hidden;
-        background-color: #f8fafc;
+        background-color: rgba(10, 11, 14, 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
     .current-preview-img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        background-color: #edf2f7;
+        object-fit: cover; /* Cambiado a cover para unificar con el feed */
     }
 
-    /* Zona de carga de archivos (Opcional en Edit) */
-    .file-dropzone-light {
+    /* Zona de carga de archivos (Dropzone Premium Oscuro) */
+    .file-dropzone-dark {
         position: relative;
-        border: 2px dashed #cbd5e1;
-        background-color: #f8fafc;
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        background-color: rgba(13, 14, 18, 0.4);
         border-radius: 12px;
         padding: 20px;
         text-align: center;
@@ -74,12 +92,12 @@
         cursor: pointer;
     }
 
-        .file-dropzone-light:hover {
-            background-color: #f0fdf4;
-            border-color: #00af50;
+        .file-dropzone-dark:hover {
+            background-color: rgba(255, 193, 7, 0.05);
+            border-color: var(--accent-yellow);
         }
 
-        .file-dropzone-light input[type="file"] {
+        .file-dropzone-dark input[type="file"] {
             position: absolute;
             top: 0;
             left: 0;
@@ -89,9 +107,10 @@
             cursor: pointer;
         }
 
-    .btn-action-green {
-        background-color: #00af50;
-        color: #ffffff;
+    /* Botón de Acción Principal */
+    .btn-action-yellow {
+        background-color: var(--accent-yellow);
+        color: #000;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -101,121 +120,126 @@
         transition: all 0.3s ease;
     }
 
-        .btn-action-green:hover {
-            background-color: #009645;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 175, 80, 0.2);
+        .btn-action-yellow:hover {
+            background-color: #e0a800;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
         }
 
     .link-back {
-        color: #64748b;
+        color: var(--text-secondary);
         font-weight: 600;
         transition: color 0.2s;
     }
 
         .link-back:hover {
-            color: #00af50;
+            color: var(--accent-yellow);
         }
 </style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-7">
+        <div class="col-md-10 col-lg-8">
 
-            <div class="mb-3">
-                <a asp-action="Index" class="text-decoration-none link-back small d-inline-flex align-items-center gap-1">
+            <div class="mb-4">
+                <a asp-action="Index" class="text-decoration-none link-back small d-inline-flex align-items-center gap-2" data-ajax="true">
                     <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Volver al Catálogo
                 </a>
             </div>
 
-            <div class="card card-dashboard-light">
+            <div class="card card-dashboard-dark shadow-lg">
                 <div class="p-4 text-center">
-                    <h3 class="fw-bold mb-1" style="color: #0f172a;">Modificar Registro</h3>
-                    <p class="text-muted small">Actualiza las especificaciones o la foto de este cromo de colección.</p>
+                    <h3 class="fw-bold mb-1 text-white" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Modificar Registro</h3>
+                    <p class="small mb-0" style="color: var(--text-secondary);">Actualiza las especificaciones o la foto de este cromo de colección.</p>
                     <hr class="border-secondary opacity-25 mt-3 mb-0" />
                 </div>
 
                 <div class="card-body px-4 pb-5 pt-0">
                     <form asp-action="Edit" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small bg-danger bg-opacity-10 text-danger border-danger border-opacity-25" role="alert"></div>
 
                         <input type="hidden" asp-for="Id" />
-                        <input type="hidden" asp-for="FotoUrl" /> <div class="row g-4">
-                        <div class="col-md-5 d-flex flex-column align-items-center border-end border-translucent pe-md-4">
-                            <label class="form-label mb-2 text-center">Imagen Actual</label>
-                            <div class="current-preview-container mb-3">
-                                @if (!string.IsNullOrEmpty(Model.FotoUrl))
-                                {
-                                    <img src="@Model.FotoUrl" id="img-preview-element" class="current-preview-img" alt="Foto Cromo" />
-                                }
-                                else
-                                {
-                                    <i data-lucide="image" style="width: 48px; height: 48px;" class="text-muted opacity-25"></i>
-                                }
+                        <input type="hidden" asp-for="FotoUrl" />
+
+                        <div class="row g-4">
+
+                            @* SECCIÓN IZQUIERDA: GESTIÓN DE MEDIOS / IMAGEN *@
+                            <div class="col-md-5 d-flex flex-column align-items-center border-end border-secondary border-opacity-25 pe-md-4">
+                                <label class="form-label mb-2 text-center text-white-50">Imagen Actual</label>
+
+                                <div class="current-preview-container mb-3">
+                                    @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                                    {
+                                        <img src="@Model.FotoUrl" id="img-preview-element" class="current-preview-img" alt="Foto Cromo" />
+                                    }
+                                    else
+                                    {
+                                        <i data-lucide="image" style="width: 48px; height: 48px;" class="text-white opacity-25"></i>
+                                    }
+                                </div>
+
+                                <div class="file-dropzone-dark w-100">
+                                    <i data-lucide="upload" style="width: 20px; height: 20px;" class="text-warning mb-1"></i>
+                                    <h6 class="fw-bold text-white mb-1" style="font-size: 0.8rem;">Reemplazar foto</h6>
+                                    <p class="mb-0 small" style="color: var(--text-secondary); font-size: 0.7rem;">Opcional (JPG, PNG)</p>
+                                    <input type="file" name="nuevaImagenCromo" id="nuevaImagenCromo" accept="image/*" />
+                                </div>
+                                <div id="file-name-preview" class="text-warning small mt-2 fw-semibold text-center" style="font-size: 0.75rem;"></div>
                             </div>
 
-                            <div class="file-dropzone-light w-100">
-                                <i data-lucide="upload" style="width: 20px; height: 20px;" class="text-success mb-1"></i>
-                                <h6 class="fw-semibold text-secondary mb-1" style="font-size: 0.8rem;">Reemplazar foto</h6>
-                                <p class="text-muted mb-0" style="font-size: 0.7rem;">Opcional (JPG, PNG)</p>
-                                <input type="file" name="nuevaImagenCromo" id="nuevaImagenCromo" accept="image/*" />
+                            @* SECCIÓN DERECHA: ATRIBUTOS DEL CROMO *@
+                            <div class="col-md-7">
+                                <div class="row mb-3">
+                                    <div class="col-sm-6">
+                                        <label asp-for="NumeroCromo" class="form-label">Número / Sigla</label>
+                                        <input asp-for="NumeroCromo" class="form-control form-control-dark" placeholder="Ej: 342" />
+                                        <span asp-validation-for="NumeroCromo" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-sm-6 mt-3 mt-sm-0">
+                                        <label asp-for="Edicion" class="form-label">Edición</label>
+                                        <input asp-for="Edicion" class="form-control form-control-dark" placeholder="Ej: Oro, Estándar" />
+                                        <span asp-validation-for="Edicion" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ValorMercado" class="form-label">Val. Mercado (USD)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-dark border-secondary border-opacity-50 text-warning fw-bold">$</span>
+                                        <input asp-for="ValorMercado" class="form-control form-control-dark" type="number" step="0.01" lang="en" />
+                                    </div>
+                                    <span asp-validation-for="ValorMercado" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="JugadorId" class="form-label">Seleccionar Jugador</label>
+                                    <select asp-for="JugadorId" class="form-select form-control-dark" asp-items="ViewBag.JugadorId">
+                                        <option value="" disabled>-- Asignar crack --</option>
+                                    </select>
+                                    <span asp-validation-for="JugadorId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="AlbumId" class="form-label">Álbum Relacionado</label>
+                                    <select asp-for="AlbumId" class="form-select form-control-dark" asp-items="ViewBag.AlbumId">
+                                        <option value="" disabled>-- Asignar álbum --</option>
+                                    </select>
+                                    <span asp-validation-for="AlbumId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-action-yellow fw-bold">
+                                        Actualizar Cambios
+                                    </button>
+                                </div>
                             </div>
-                            <div id="file-name-preview" class="text-success small mt-2 fw-semibold text-center" style="font-size: 0.75rem;"></div>
                         </div>
 
-                        <div class="col-md-7">
-                            <div class="row mb-3">
-                                <div class="col-sm-6">
-                                    <label asp-for="NumeroCromo" class="form-label">Número / Sigla</label>
-                                    <input asp-for="NumeroCromo" class="form-control form-control-light" placeholder="Ej: 342" />
-                                    <span asp-validation-for="NumeroCromo" class="text-danger small"></span>
-                                </div>
-                                <div class="col-sm-6 mt-3 mt-sm-0">
-                                    <label asp-for="Edicion" class="form-label">Edición</label>
-                                    <input asp-for="Edicion" class="form-control form-control-light" placeholder="Ej: Oro, Estándar" />
-                                    <span asp-validation-for="Edicion" class="text-danger small"></span>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="ValorMercado" class="form-label">Val. Mercado (USD)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-secondary-subtle text-secondary fw-semibold">$</span>
-                                    <input asp-for="ValorMercado" class="form-control form-control-light" type="number" step="0.01" lang="en" />
-                                </div>
-                                <span asp-validation-for="ValorMercado" class="text-danger small"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="JugadorId" class="form-label">Seleccionar Jugador</label>
-                                <select asp-for="JugadorId" class="form-select form-control-light" asp-items="ViewBag.JugadorId">
-                                    <option value="" disabled>-- Asignar crack --</option>
-                                </select>
-                                <span asp-validation-for="JugadorId" class="text-danger small"></span>
-                            </div>
-
-                            <div class="mb-4">
-                                <label asp-for="AlbumId" class="form-label">Álbum Relacionado</label>
-                                <select asp-for="AlbumId" class="form-select form-control-light" asp-items="ViewBag.AlbumId">
-                                    <option value="" disabled>-- Asignar álbum --</option>
-                                </select>
-                                <span asp-validation-for="AlbumId" class="text-danger small"></span>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-action-green fw-semibold">
-                                    Actualizar Cambios
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
 </div>
 
 @section Scripts {
@@ -231,9 +255,8 @@
             var imgPreview = document.getElementById('img-preview-element');
 
             if(file) {
-                previewText.innerHTML = "✓ Nueva imagen: " + file.name;
+                previewText.innerHTML = "✓ Nueva imagen cargada: " + file.name;
 
-                // Cambia la imagen en tiempo real en la pantalla antes de enviarla
                 var reader = new FileReader();
                 reader.onload = function(event) {
                     if(imgPreview) {

@@ -50,6 +50,14 @@ namespace albumMundial.Controllers
                 .Take(4)
                 .ToListAsync();
 
+
+            // 👈 Detectamos si es una petición AJAX
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                // Retorna solo el HTML interno de la vista Index sin el Layout global
+                return PartialView(model);
+            }
+
             return View(model);
         }
 

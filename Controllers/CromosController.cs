@@ -15,14 +15,51 @@ public class CromosController : Controller
     }
 
     // GET: CROMOS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string? buscar)    
     {
+        /*
         var cromos = await _context.Cromos
         .Include(c => c.Jugador)
         .Include(c => c.Album)    
         .ToListAsync();
 
         return View(cromos);
+
+
+          var equipos = _context.Equipos
+            .Include(e => e.Pais)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(buscar))
+            equipos = equipos.Where(e => e.Nombre.Contains(buscar)
+                                     || e.Pais.Nombre.Contains(buscar));
+
+        ViewBag.Buscar = buscar;
+        return View(await equipos.ToListAsync());
+
+        */
+
+        var query = _context.Cromos
+         .Include(c => c.Jugador)
+         .Include(c => c.Album)
+         .AsQueryable();
+
+        if (!string.IsNullOrEmpty(buscar))
+        {
+            query = query.Where(e => e.Jugador.Nombre.Contains(buscar));
+        }
+
+        ViewBag.Buscar = buscar;
+
+        var listaCromos = await query.ToListAsync();
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView(listaCromos);
+        }
+
+        return View(listaCromos);
+
     }
 
     // GET: CROMOS/Details/5
@@ -34,11 +71,19 @@ public class CromosController : Controller
         }
 
         var cromo = await _context.Cromos
+            .Include(c => c.Jugador)
+            .Include(c => c.Album)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (cromo == null)
         {
             return NotFound();
         }
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView(cromo);
+        }
+
 
         return View(cromo);
     }
@@ -48,6 +93,12 @@ public class CromosController : Controller
     {
         ViewData["AlbumId"] = new SelectList(_context.Albumes, "Id", "Nombre");
         ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre");
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView();
+        }
+
         return View();
     }
 
@@ -113,6 +164,12 @@ public class CromosController : Controller
         // MANDAMOS LOS SELECTS CON EL VALOR SELECCIONADO ACTUALMENTE
         ViewData["AlbumId"] = new SelectList(_context.Albumes, "Id", "Nombre", cromo.AlbumId);
         ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Nombre", cromo.JugadorId);
+
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView(cromo);
+        }
 
         return View(cromo);
     }
@@ -203,6 +260,11 @@ public class CromosController : Controller
         if (cromo == null)
         {
             return NotFound();
+        }
+
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView(cromo);
         }
 
         return View(cromo);

@@ -1,50 +1,222 @@
-@model IEnumerable<albumMundial.Models.Pais>
+﻿@model IEnumerable<albumMundial.Models.Pais>
 @{
-    ViewData["Title"] = "Países";
+    ViewData["Title"] = "PaÃ­ses";
 }
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --accent-purple: #a855f7; /* Un poco más brillante para que resalte */
+        --text-secondary: #cbd5e1; /* Gris mucho más claro para que sea legible 👈 */
+    }
 
-<h1>🌍 Países</h1>
+    /* 🟢 FONDO GLOBAL CON CAPA OSCURA */
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
 
-<form method="get" asp-action="Index" class="d-flex mb-3">
-    <input type="text" name="buscar" value="@ViewBag.Buscar"
-           class="form-control me-2" placeholder="Buscar por nombre o continente..." />
-    <button type="submit" class="btn btn-primary">Buscar</button>
-    <a asp-action="Index" class="btn btn-secondary ms-2">Limpiar</a>
-</form>
+    /* Contenedor Principal Estilo Widget */
+    .sports-widget {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
 
-<p>
-    <a asp-action="Create" class="btn btn-success">+ Nuevo País</a>
-</p>
+    .widget-title {
+        font-size: 0.85rem;
+        text-uppercase: uppercase;
+        letter-spacing: 1px;
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-<table class="table table-striped table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>@Html.DisplayNameFor(m => m.Nombre)</th>
-            <th>@Html.DisplayNameFor(m => m.Continente)</th>
-            <th>@Html.DisplayNameFor(m => m.CodigoFifa)</th>
-            <th>@Html.DisplayNameFor(m => m.RankingFifa)</th>
-            <th>Equipo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Nombre</td>
-                <td>@item.Continente</td>
-                <td>@item.CodigoFifa</td>
-                <td>@item.RankingFifa</td>
-                <td>@(item.Equipo?.Nombre ?? "Sin equipo")</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id"
-                       class="btn btn-info btn-sm">Ver</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id"
-                       class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id"
-                       class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
+    /* Tarjetas de Países con Imagen de Fondo Controlada */
+    .pais-card {
+        background: linear-gradient(180deg, rgba(30, 32, 41, 0.5) 0%, rgba(15, 16, 22, 0.95) 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.25rem;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Imagen de fondo / Bandera con opacidad equilibrada para no tapar textos */
+    .pais-card-bg-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60%; /* Ocupa el lado derecho */
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.15; /* Lo suficientemente bajo para leer, lo suficientemente alto para verse */
+        mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+        -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .pais-card-content {
+        position: relative;
+        z-index: 2; /* Por encima de la foto */
+    }
+
+    .pais-card:hover {
+        border-color: var(--accent-yellow);
+        transform: translateY(-4px);
+    }
+
+    /* Inputs y Buscador estilizados oscuros */
+    .form-dark-input {
+        background-color: rgba(13, 14, 18, 0.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+    }
+
+        .form-dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
-    </tbody>
-</table>
+
+        .form-dark-input:focus {
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25) !important;
+        }
+
+    /* Estilos de botones reajustados para mejor visibilidad */
+    .btn-action-view {
+        color: #38bdf8;
+        border-color: rgba(56, 189, 248, 0.4);
+    }
+
+        .btn-action-view:hover {
+            background-color: #38bdf8;
+            color: #000;
+        }
+
+    .btn-action-edit {
+        color: #fbbf24;
+        border-color: rgba(251, 191, 36, 0.4);
+    }
+
+        .btn-action-edit:hover {
+            background-color: #fbbf24;
+            color: #000;
+        }
+
+    .btn-action-delete {
+        color: #f87171;
+        border-color: rgba(248, 113, 113, 0.4);
+    }
+
+        .btn-action-delete:hover {
+            background-color: #f87171;
+            color: #fff;
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="sports-widget">
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div class="widget-title mb-0">
+                <i data-lucide="globe" class="text-warning" style="width: 20px; height: 20px;"></i>
+                <span class="fs-5 text-white" style="text-transform: none; letter-spacing: normal;">Gestión de Países Globales</span>
+            </div>
+            <a asp-action="Create" class="btn btn-warning btn-sm fw-bold px-3 py-2 rounded-2 shadow">
+                + Nuevo País
+            </a>
+        </div>
+
+        <form method="get" asp-action="Index" class="row g-2 mb-4">
+            <div class="col-md-7 col-sm-12">
+                <input type="text" name="buscar" value="@ViewBag.Buscar"
+                       class="form-control form-dark-input" placeholder="Buscar por nombre o continente..." />
+            </div>
+            <div class="col-md-5 col-sm-12 d-flex gap-2">
+                <button type="submit" class="btn btn-outline-light w-100 fw-semibold border-secondary">
+                    <i data-lucide="search" class="d-inline-block me-1" style="width: 14px; height: 14px;"></i> Buscar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary w-100 opacity-75">Limpiar</a>
+            </div>
+        </form>
+
+        <hr class="border-secondary opacity-25 mb-4">
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col">
+                        <div class="pais-card shadow">
+
+                            @if (!string.IsNullOrEmpty(item.Equipo.LogoUrl))
+                            {
+                                <img src="@item.Equipo.LogoUrl" class="pais-card-bg-img" alt="Bandera @item.Nombre" />
+                            }
+
+                            <div class="pais-card-content">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="text-white fw-bold mb-0 text-truncate" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">@item.Nombre</h5>
+                                    <span class="badge bg-dark border border-secondary text-uppercase text-warning px-2 py-1" style="font-size: 0.7rem;">
+                                        @(string.IsNullOrEmpty(item.CodigoFifa) ? "N/A" : item.CodigoFifa)
+                                    </span>
+                                </div>
+
+                                <p class="mb-3 small fw-semibold" style="color: var(--text-secondary);">
+                                    <i data-lucide="map-pin" class="d-inline-block me-1 text-info" style="width: 13px; height: 13px;"></i> Continente: <span class="text-white">@item.Continente</span>
+                                </p>
+
+                                <div class="p-2.5 rounded mb-3" style="background-color: rgba(10, 11, 14, 0.75); border: 1px solid rgba(255,255,255,0.05);">
+                                    <div class="d-flex justify-content-between small mb-1.5">
+                                        <span style="color: var(--text-secondary);">Ranking FIFA:</span>
+                                        <span class="fw-bold text-white">#@item.RankingFifa</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between small">
+                                        <span style="color: var(--text-secondary);">Equipo Asignado:</span>
+                                        <span class="fw-bold" style="color: #c084fc !important;">
+                                            @(item.Equipo?.Nombre ?? "Sin equipo")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-auto pt-2 border-top border-secondary border-opacity-25" style="position: relative; z-index: 2;">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-action-view btn-sm w-100 py-1.5 fw-bold bg-transparent">
+                                    Ver
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action-edit btn-sm w-100 py-1.5 fw-bold bg-transparent">
+                                    Editar
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-action-delete btn-sm w-100 py-1.5 fw-bold bg-transparent">
+                                    Eliminar
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5 text-muted">
+                    <p class="mb-0 fs-5 text-white-50">No se encontraron países registrados.</p>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
