@@ -9,138 +9,190 @@
         --card-bg: rgba(22, 24, 31, 0.85);
         --border-color: rgba(38, 41, 54, 0.7);
         --accent-yellow: #ffc107;
+        --accent-purple: #a855f7;
         --text-secondary: #cbd5e1;
     }
 
+    /* 🟢 FONDO GLOBAL CON CAPA OSCURA */
     body {
-        background: linear-gradient( 180deg, rgba(13,14,18,0.4) 0%, rgba(13,14,18,0.9) 100% ), url('/images/home_imagen.png') no-repeat center center fixed;
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
         background-size: cover;
     }
 
-    .card-dashboard-dark {
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    /* Contenedor Principal Estilo Widget */
+    .sports-widget {
         background-color: var(--card-bg);
-        backdrop-filter: blur(12px);
-    }
-
-    .form-label {
-        font-weight: 700;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: .8px;
-    }
-
-    .form-control-dark {
-        background-color: rgba(13,14,18,0.6) !important;
-        border: 1px solid var(--border-color) !important;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 10px 14px;
-    }
-
-        .form-control-dark:focus {
-            background-color: rgba(13,14,18,0.8) !important;
-            border-color: var(--accent-yellow) !important;
-            box-shadow: 0 0 0 3px rgba(255,193,7,.2) !important;
-            color: white !important;
-        }
-
-    .preview-container {
-        width: 100%;
-        max-width: 220px;
-        aspect-ratio: 3/4;
-        border-radius: 12px;
-        overflow: hidden;
         border: 1px solid var(--border-color);
-        background-color: rgba(10,11,14,.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .preview-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-    .file-dropzone-dark {
-        position: relative;
-        border: 2px dashed rgba(255,255,255,.2);
-        background-color: rgba(13,14,18,.4);
         border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        transition: all .3s ease;
-        cursor: pointer;
+        padding: 1.5rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-        .file-dropzone-dark:hover {
-            border-color: var(--accent-yellow);
-            background-color: rgba(255,193,7,.05);
-        }
-
-        .file-dropzone-dark input[type=file] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-    .btn-action-yellow {
-        background-color: var(--accent-yellow);
-        color: #000;
+    .widget-title {
+        font-size: 0.85rem;
+        text-uppercase: uppercase;
+        letter-spacing: 1px;
+        color: #fff;
         font-weight: 700;
-        text-transform: uppercase;
-        border: none;
-        border-radius: 8px;
-        padding: 12px;
+        margin-bottom: 0rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-        .btn-action-yellow:hover {
-            background-color: #e0a800;
-            color: #000;
-        }
-
-    .link-back {
-        color: var(--text-secondary);
-        font-weight: 600;
-    }
-
-        .link-back:hover {
-            color: var(--accent-yellow);
-        }
-
-    .form-check-input {
-        transform: scale(1.3);
-    }
-
-    .cromo-img-container {
-        width: 100%;
-        height: 260px;
-        position: relative;
+    /* ========================================================
+               ESTRUCTURA PREMIUM DEL CROMO DIGITAL
+               ======================================================== */
+    .cromo-card {
+        background: rgba(15, 17, 23, 0.85);
+        border-radius: 14px;
         overflow: hidden;
-        background: rgba(10,11,14,.6);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .cromo-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+    /* Contenedor de la Imagen */
+    .cromo-img-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 3 / 4;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
+        background-color: rgba(10, 11, 14, 0.5);
     }
 
     .cromo-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        object-position: top;
+        object-fit: cover; /* Cambiado a cover para un look dinámico de cromo de fútbol */
+        transition: transform 0.5s ease;
     }
 
-</style>
+    .cromo-card:hover .cromo-img {
+        transform: scale(1.08); /* Efecto zoom sutil al pasar el cursor */
+    }
 
+    /* Número Flotante Premium */
+    .badge-number {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: rgba(15, 17, 23, 0.9);
+        color: #fff;
+        border: 1px solid var(--border-color);
+        font-weight: 800;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        z-index: 10;
+        letter-spacing: 0.5px;
+    }
+
+    /* Inputs y Buscador estilizados oscuros */
+    .form-dark-input {
+        background-color: rgba(13, 14, 18, 0.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+    }
+
+        .form-dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-dark-input:focus {
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25) !important;
+        }
+
+    /* ========================================================
+               MARCOS Y BRILLOS PERSONALIZADOS (NEÓN EFFECTS)
+               ======================================================== */
+
+    /* 1. Edición Estándar */
+    .cromo-estandar {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+        .cromo-estandar .badge-edicion {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+    /* 2. Edición Oro (Brillo Dorado Gamer) */
+    .cromo-oro {
+        border: 2px solid #eab308 !important;
+        box-shadow: 0 0 15px rgba(234, 179, 8, 0.35);
+    }
+
+        .cromo-oro .badge-edicion {
+            background: linear-gradient(135deg, #fef08a, #eab308);
+            color: #000;
+            font-weight: 800;
+        }
+
+        .cromo-oro .badge-number {
+            border-color: #eab308;
+            color: #eab308;
+        }
+
+    /* 3. Edición Especial / Leyenda / Shiny (Efecto Energético) */
+    .cromo-especial {
+        border: 2px solid #c084fc !important;
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.45);
+    }
+
+        .cromo-especial .badge-edicion {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .cromo-especial .badge-number {
+            border-color: #c084fc;
+            color: #c084fc;
+        }
+
+    /* Panel de Acciones Inferior */
+    .btn-action-panel {
+        background-color: rgba(10, 11, 14, 0.8);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .action-icon {
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: #94a3b8;
+        transition: all 0.2s;
+        font-weight: 600;
+    }
+
+        .action-icon:hover {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+        }
+
+        .action-icon.edit-btn:hover {
+            background-color: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .action-icon.delete-btn:hover {
+            color: #f87171;
+            background-color: rgba(248, 113, 113, 0.15);
+        }
+</style>
 <div class="container mt-4">
     <div class="sports-widget">
 

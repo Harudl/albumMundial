@@ -9,118 +9,150 @@
         --card-bg: rgba(22, 24, 31, 0.85);
         --border-color: rgba(38, 41, 54, 0.7);
         --accent-yellow: #ffc107;
+        --accent-purple: #a855f7;
         --text-secondary: #cbd5e1;
     }
 
+    /* 🟢 FONDO GLOBAL CON CAPA OSCURA */
     body {
-        background: linear-gradient( 180deg, rgba(13,14,18,0.4) 0%, rgba(13,14,18,0.9) 100% ), url('/images/home_imagen.png') no-repeat center center fixed;
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
         background-size: cover;
     }
 
-    .card-dashboard-dark {
+    /* Contenedor Principal con Efecto Glassmorphism */
+    .card-details {
         border: 1px solid var(--border-color);
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         background-color: var(--card-bg);
         backdrop-filter: blur(12px);
-    }
-
-    .form-label {
-        font-weight: 700;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: .8px;
-    }
-
-    .form-control-dark {
-        background-color: rgba(13,14,18,0.6) !important;
-        border: 1px solid var(--border-color) !important;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 10px 14px;
-    }
-
-        .form-control-dark:focus {
-            background-color: rgba(13,14,18,0.8) !important;
-            border-color: var(--accent-yellow) !important;
-            box-shadow: 0 0 0 3px rgba(255,193,7,.2) !important;
-            color: white !important;
-        }
-
-    .preview-container {
-        width: 100%;
-        max-width: 220px;
-        aspect-ratio: 3/4;
-        border-radius: 12px;
         overflow: hidden;
-        border: 1px solid var(--border-color);
-        background-color: rgba(10,11,14,.6);
+    }
+
+    /* Contenedor del Cromo en Alta Definición */
+    .cromo-view-container {
+        background-color: rgba(10, 11, 14, 0.6);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 320px;
+        aspect-ratio: 3 / 4;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-        .preview-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-    .file-dropzone-dark {
+        overflow: hidden;
         position: relative;
-        border: 2px dashed rgba(255,255,255,.2);
-        background-color: rgba(13,14,18,.4);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        transition: all .3s ease;
-        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-        .file-dropzone-dark:hover {
-            border-color: var(--accent-yellow);
-            background-color: rgba(255,193,7,.05);
+        .cromo-view-container:hover {
+            transform: scale(1.03) rotate(1deg); /* Ligero giro de cromo de colección */
         }
 
-        .file-dropzone-dark input[type=file] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
+    .cromo-view-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Se expande por completo para lucir imponente */
+    }
+
+    .badge-view-number {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background-color: rgba(15, 17, 23, 0.9);
+        color: #ffffff;
+        border: 1px solid var(--border-color);
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        z-index: 10;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    /* ========================================================
+               MARCOS PRESET Y BRILLOS DE NEÓN PREMIUM (DETALLE)
+               ======================================================== */
+    .border-view-estandar {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .border-view-oro {
+        border: 3px solid #eab308 !important;
+        box-shadow: 0 0 25px rgba(234, 179, 8, 0.5);
+    }
+
+        .border-view-oro .badge-view-number {
+            border-color: #eab308;
+            color: #eab308;
         }
 
-    .btn-action-yellow {
+    .border-view-especial {
+        border: 3px solid #c084fc !important;
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+    }
+
+        .border-view-especial .badge-view-number {
+            border-color: #c084fc;
+            color: #c084fc;
+        }
+
+    /* Detalles de la Ficha Técnica (Zonas Oscuras de Alto Contraste) */
+    .info-label {
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-uppercase: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1.2px;
+        margin-bottom: 2px;
+    }
+
+    .info-value {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .info-box {
+        background-color: rgba(13, 14, 18, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 14px 18px;
+        transition: all 0.2s ease;
+    }
+
+        .info-box:hover {
+            background-color: rgba(22, 24, 31, 0.9);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+    /* Botonera de navegación */
+    .btn-edit-action {
         background-color: var(--accent-yellow);
         color: #000;
         font-weight: 700;
-        text-transform: uppercase;
         border: none;
-        border-radius: 8px;
-        padding: 12px;
+        transition: all 0.2s;
     }
 
-        .btn-action-yellow:hover {
+        .btn-edit-action:hover {
             background-color: #e0a800;
             color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
         }
 
     .link-back {
         color: var(--text-secondary);
         font-weight: 600;
+        transition: color 0.2s;
     }
 
         .link-back:hover {
             color: var(--accent-yellow);
         }
-
-    .form-check-input {
-        transform: scale(1.3);
-    }
 </style>
+
 
 <div class="container py-5">
     <div class="row justify-content-center">
