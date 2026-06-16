@@ -1,66 +1,311 @@
 @model albumMundial.Models.Jugador
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Jugador";
 }
 
-<h1>Create</h1>
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
+    }
 
-<h4>Jugador</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    body {
+        background: linear-gradient( 180deg, rgba(13,14,18,0.4) 0%, rgba(13,14,18,0.9) 100% ), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
 
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+    .card-dashboard-dark {
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        background-color: var(--card-bg);
+        backdrop-filter: blur(12px);
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: .75rem;
+        letter-spacing: .8px;
+    }
+
+    .form-control-dark {
+        background-color: rgba(13,14,18,.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: white !important;
+        border-radius: 8px;
+    }
+
+        .form-control-dark:focus {
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 3px rgba(255,193,7,.2) !important;
+        }
+
+        .form-control-dark option {
+            background-color: #16181f;
+            color: white;
+        }
+
+    .preview-container {
+        width: 100%;
+        max-width: 220px;
+        aspect-ratio: 3/4;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        background-color: rgba(10,11,14,.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .file-dropzone-dark {
+        position: relative;
+        border: 2px dashed rgba(255,255,255,.2);
+        background-color: rgba(13,14,18,.4);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .file-dropzone-dark:hover {
+            border-color: var(--accent-yellow);
+        }
+
+        .file-dropzone-dark input[type=file] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    .btn-action-yellow {
+        background-color: var(--accent-yellow);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+        .btn-action-yellow:hover {
+            background-color: #e0a800;
+            color: #000;
+        }
+
+    .link-back {
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+        .link-back:hover {
+            color: var(--accent-yellow);
+        }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+
+            ```
+            <div class="mb-4">
+                <a asp-action="Index"
+                   class="text-decoration-none link-back small">
+                    ← Volver a Jugadores
+                </a>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Posicion" class="control-label"></label>
-                <input asp-for="Posicion" class="form-control" />
-                <span asp-validation-for="Posicion" class="text-danger"></span>
+            <div class="card card-dashboard-dark">
+
+                <div class="p-4 text-center">
+                    <h3 class="fw-bold text-white mb-1">
+                        Crear Jugador
+                    </h3>
+
+                    <p class="small mb-0"
+                       style="color: var(--text-secondary);">
+                        Registra una nueva estrella para el álbum.
+                    </p>
+
+                    <hr class="border-secondary opacity-25 mt-3 mb-0" />
+                </div>
+
+                <div class="card-body px-4 pb-5 pt-0">
+
+                    <form asp-action="Create"
+                          enctype="multipart/form-data">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger small">
+                        </div>
+
+                        <div class="row g-4">
+
+                            <div class="col-md-4 d-flex flex-column align-items-center">
+
+                                <label class="form-label text-white-50 mb-2">
+                                    Fotografía
+                                </label>
+
+                                <div class="preview-container mb-3">
+                                    <img id="img-preview"
+                                         src=""
+                                         style="display:none;" />
+
+                                    <i id="placeholder-icon"
+                                       data-lucide="user"
+                                       class="text-white opacity-25"
+                                       style="width:64px;height:64px;">
+                                    </i>
+                                </div>
+
+                                <div class="file-dropzone-dark w-100">
+                                    <i data-lucide="upload"
+                                       class="text-warning mb-2"></i>
+
+                                    <h6 class="text-white fw-bold">
+                                        Subir Imagen
+                                    </h6>
+
+                                    <p class="small mb-0"
+                                       style="color: var(--text-secondary);">
+                                        JPG o PNG
+                                    </p>
+
+                                    <input type="file"
+                                           id="imagenJugador"
+                                           name="imagenJugador"
+                                           accept="image/*" />
+                                </div>
+
+                                <div id="file-name-preview"
+                                     class="text-warning small mt-2 text-center">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <div class="mb-3">
+                                    <label asp-for="Nombre" class="form-label"></label>
+                                    <input asp-for="Nombre" class="form-control form-control-dark" />
+                                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Posicion" class="form-label"></label>
+                                    <input asp-for="Posicion" class="form-control form-control-dark" />
+                                    <span asp-validation-for="Posicion" class="text-danger small"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="NumeroCamiseta" class="form-label"></label>
+                                        <input asp-for="NumeroCamiseta" class="form-control form-control-dark" />
+                                        <span asp-validation-for="NumeroCamiseta" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="FechaNacimiento" class="form-label"></label>
+                                        <input asp-for="FechaNacimiento"
+                                               type="date"
+                                               class="form-control form-control-dark" />
+                                        <span asp-validation-for="FechaNacimiento" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="EquipoId" class="form-label">
+                                        Equipo
+                                    </label>
+
+                                    <select asp-for="EquipoId"
+                                            asp-items="ViewBag.EquipoId"
+                                            class="form-select form-control-dark">
+                                        <option value="">
+                                            -- Seleccione un equipo --
+                                        </option>
+                                    </select>
+
+                                    <span asp-validation-for="EquipoId"
+                                          class="text-danger small">
+                                    </span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit"
+                                            class="btn btn-action-yellow">
+                                        Crear Jugador
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="NumeroCamiseta" class="control-label"></label>
-                <input asp-for="NumeroCamiseta" class="form-control" />
-                <span asp-validation-for="NumeroCamiseta" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="EquipoId" class="control-label"></label>
-                <input asp-for="EquipoId" class="form-control" />
-                <span asp-validation-for="EquipoId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Equipo" class="control-label"></label>
-                <input asp-for="Equipo" class="form-control" />
-                <span asp-validation-for="Equipo" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Cromo" class="control-label"></label>
-                <input asp-for="Cromo" class="form-control" />
-                <span asp-validation-for="Cromo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
+    ```
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    ```
+    <script>
+        document.getElementById('imagenJugador')
+            .addEventListener('change', function(e){
+
+            let file = e.target.files[0];
+
+            let previewText =
+                document.getElementById('file-name-preview');
+
+            let img =
+                document.getElementById('img-preview');
+
+            let placeholder =
+                document.getElementById('placeholder-icon');
+
+            if(file){
+
+                previewText.innerHTML =
+                    "✓ Imagen seleccionada: " + file.name;
+
+                let reader = new FileReader();
+
+                reader.onload = function(ev){
+                    img.src = ev.target.result;
+                    img.style.display = "block";
+                    placeholder.style.display = "none";
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    ```
+
+}

@@ -1,66 +1,178 @@
 @model albumMundial.Models.Jugador
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Jugador";
 }
 
-<h1>Details</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
 
-<div>
-    <h4>Jugador</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Posicion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Posicion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumeroCamiseta)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumeroCamiseta)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaNacimiento)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EquipoId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EquipoId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipo)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cromo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cromo)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div class="mb-4">
+                <a asp-action="Index"
+                   class="text-decoration-none link-back small d-inline-flex align-items-center gap-2">
+                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+                    Volver al Catálogo de Jugadores
+                </a>
+            </div>
+
+            <div class="card card-details p-4 p-sm-5">
+
+                <div class="row g-5 align-items-center">
+
+                    <!-- FOTO DEL JUGADOR -->
+                    <div class="col-md-5 d-flex justify-content-center">
+
+                        <div class="cromo-view-container border-view-estandar">
+
+                            <span class="badge-view-number">
+                                #@Model.NumeroCamiseta
+                            </span>
+
+                            @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                            {
+                                <img src="@Model.FotoUrl"
+                                     class="cromo-view-img"
+                                     alt="@Model.Nombre" />
+                            }
+                            else
+                            {
+                                <div class="text-center py-5 opacity-25">
+                                    <i data-lucide="user"
+                                       style="width:64px;height:64px;"
+                                       class="text-white mb-2"></i>
+
+                                    <p class="text-white small mb-0">
+                                        Sin fotografía
+                                    </p>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <!-- DATOS DEL JUGADOR -->
+                    <div class="col-md-7">
+
+                        <div class="mb-4">
+
+                            <span class="badge text-uppercase px-3 py-2 rounded-pill mb-2 fw-bold"
+                                  style="background-color:rgba(255,255,255,0.1);
+                                color:#e2e8f0;
+                                border:1px solid rgba(255,255,255,0.2);">
+                                @Model.Posicion
+                            </span>
+
+                            <h1 class="fw-extrabold text-white m-0 mt-2">
+                                @Model.Nombre
+                            </h1>
+
+                            <p class="small mt-1 text-secondary">
+                                Perfil oficial registrado en el Álbum Mundial.
+                            </p>
+
+                        </div>
+
+                        <hr class="border-secondary opacity-25 my-4" />
+
+                        <div class="row g-3">
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Equipo
+                                    </div>
+
+                                    <div class="info-value text-info">
+                                        @(Model.Equipo?.Nombre ?? "Sin equipo")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Posición
+                                    </div>
+
+                                    <div class="info-value text-warning">
+                                        @Model.Posicion
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Número de Camiseta
+                                    </div>
+
+                                    <div class="info-value">
+                                        #@Model.NumeroCamiseta
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Fecha de Nacimiento
+                                    </div>
+
+                                    <div class="info-value">
+                                        @Model.FechaNacimiento.ToString("dd/MM/yyyy")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Estado del Cromo
+                                    </div>
+
+                                    <div class="info-value">
+                                        @(Model.Cromo != null
+                                            ? "Tiene cromo asignado"
+                                            : "Sin cromo asignado")
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-5 d-flex flex-wrap gap-3">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@Model.Id"
+                               class="btn btn-edit-action px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2 shadow">
+
+                                <i data-lucide="pencil"
+                                   style="width:16px;height:16px;"></i>
+
+                                Editar Jugador
+
+                            </a>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-light px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2 border-secondary">
+
+                                <i data-lucide="users"
+                                   style="width:16px;height:16px;"></i>
+
+                                Regresar al Catálogo
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>

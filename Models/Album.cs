@@ -22,10 +22,12 @@ namespace albumMundial.Models
         public int CantidadCromos { get; set; }
 
         [Display(Name = "Edición Especial")]
-        public bool EdicionEspecial { get; set; } // True si es edición oro, platino, etc.
+        public bool EdicionEspecial { get; set; }
+
+        [Display(Name = "Portada")]
+        public string? FotoUrl { get; set; }
 
         // RELACIONES
-        // Relación: Un Álbum contiene muchos Cromos
         public List<Cromo> Cromos { get; set; } = new List<Cromo>();
     }
 }
