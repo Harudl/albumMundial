@@ -1,63 +1,331 @@
 @model albumMundial.Models.Jugador
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Jugador";
 }
 
-<h1>Edit</h1>
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
+    }
 
-<h4>Jugador</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Posicion" class="control-label"></label>
-                <input asp-for="Posicion" class="form-control" />
-                <span asp-validation-for="Posicion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumeroCamiseta" class="control-label"></label>
-                <input asp-for="NumeroCamiseta" class="form-control" />
-                <span asp-validation-for="NumeroCamiseta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EquipoId" class="control-label"></label>
-                <input asp-for="EquipoId" class="form-control" />
-                <span asp-validation-for="EquipoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Equipo" class="control-label"></label>
-                <input asp-for="Equipo" class="form-control" />
-                <span asp-validation-for="Equipo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cromo" class="control-label"></label>
-                <input asp-for="Cromo" class="form-control" />
-                <span asp-validation-for="Cromo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    body {
+        background: linear-gradient(180deg,
+        rgba(13,14,18,0.4) 0%,
+        rgba(13,14,18,0.9) 100%),
+        url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .card-dashboard-dark {
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.6);
+        background-color: var(--card-bg);
+        backdrop-filter: blur(12px);
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: .75rem;
+        letter-spacing: .8px;
+    }
+
+    .form-control-dark {
+        background-color: rgba(13,14,18,.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+        border-radius: 8px;
+    }
+
+        .form-control-dark:focus {
+            background-color: rgba(13,14,18,.8) !important;
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 3px rgba(255,193,7,.15) !important;
+            color: #fff !important;
+        }
+
+        .form-control-dark option {
+            background-color: #16181f;
+            color: #fff;
+        }
+
+    .preview-container {
+        width: 100%;
+        max-width: 220px;
+        aspect-ratio: 3 / 4;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: rgba(10,11,14,.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,.3);
+    }
+
+    .preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .file-dropzone-dark {
+        position: relative;
+        border: 2px dashed rgba(255,255,255,.2);
+        background-color: rgba(13,14,18,.4);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: .3s;
+        cursor: pointer;
+    }
+
+        .file-dropzone-dark:hover {
+            border-color: var(--accent-yellow);
+            background-color: rgba(255,193,7,.05);
+        }
+
+        .file-dropzone-dark input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    .btn-action-yellow {
+        background-color: var(--accent-yellow);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 12px;
+        transition: .3s;
+    }
+
+        .btn-action-yellow:hover {
+            background-color: #e0a800;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255,193,7,.3);
+        }
+
+    .link-back {
+        color: var(--text-secondary);
+        font-weight: 600;
+        transition: .2s;
+    }
+
+        .link-back:hover {
+            color: var(--accent-yellow);
+        }
+</style>
+
+<div class="container py-5">
+
+    <div class="mb-4">
+        <a asp-action="Index"
+           class="text-decoration-none link-back small d-inline-flex align-items-center gap-2">
+            ← Volver a Jugadores
+        </a>
     </div>
-</div>
 
-<div>
+    <div class="card card-dashboard-dark shadow-lg">
+
+        <div class="p-4 text-center">
+            <h3 class="fw-bold mb-1 text-white">
+                Modificar Jugador
+            </h3>
+
+            <p class="small mb-0 text-secondary">
+                Actualiza los datos y fotografía del jugador.
+            </p>
+
+            <hr class="border-secondary opacity-25 mt-3 mb-0" />
+        </div>
+
+        <div class="card-body px-4 pb-5">
+
+            <form asp-action="Edit" enctype="multipart/form-data">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="FotoUrl" />
+
+                <div class="row g-4">
+
+                    <!-- IMAGEN -->
+                    <div class="col-md-5 d-flex flex-column align-items-center border-end border-secondary border-opacity-25">
+
+                        <label class="form-label mb-2 text-white-50">
+                            Fotografía Actual
+                        </label>
+
+                        <div class="preview-container mb-3">
+
+                            @if (!string.IsNullOrEmpty(Model.FotoUrl))
+                            {
+                                <img src="@Model.FotoUrl"
+                                     id="img-preview"
+                                     class="preview-img"
+                                     alt="Jugador" />
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <span style="font-size:3rem;">⚽</span>
+                                    <p class="small text-white-50 mb-0">
+                                        Sin fotografía
+                                    </p>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="file-dropzone-dark w-100">
+
+                            <h6 class="fw-bold text-white mb-1">
+                                Reemplazar fotografía
+                            </h6>
+
+                            <p class="mb-0 small text-secondary">
+                                JPG, PNG o WEBP
+                            </p>
+
+                            <input type="file"
+                                   name="nuevaImagenJugador"
+                                   id="nuevaImagenJugador"
+                                   accept="image/*" />
+                        </div>
+
+                        <div id="file-name-preview"
+                             class="text-warning small mt-2 fw-semibold text-center">
+                        </div>
+
+                    </div>
+
+                    <!-- DATOS -->
+                    <div class="col-md-7">
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre"
+                                   class="form-label"></label>
+
+                            <input asp-for="Nombre"
+                                   class="form-control form-control-dark" />
+
+                            <span asp-validation-for="Nombre"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Posicion"
+                                   class="form-label"></label>
+
+                            <input asp-for="Posicion"
+                                   class="form-control form-control-dark" />
+
+                            <span asp-validation-for="Posicion"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NumeroCamiseta"
+                                   class="form-label"></label>
+
+                            <input asp-for="NumeroCamiseta"
+                                   class="form-control form-control-dark" />
+
+                            <span asp-validation-for="NumeroCamiseta"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FechaNacimiento"
+                                   class="form-label"></label>
+
+                            <input asp-for="FechaNacimiento"
+                                   type="date"
+                                   class="form-control form-control-dark" />
+
+                            <span asp-validation-for="FechaNacimiento"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="EquipoId"
+                                   class="form-label">
+                                Equipo
+                            </label>
+
+                            <select asp-for="EquipoId"
+                                    asp-items="ViewBag.EquipoId"
+                                    class="form-select form-control-dark">
+                            </select>
+
+                            <span asp-validation-for="EquipoId"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit"
+                                    class="btn btn-action-yellow fw-bold">
+                                Actualizar Jugador
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        document.getElementById('nuevaImagenJugador')
+            .addEventListener('change', function (e) {
+
+                let file = e.target.files[0];
+
+                if (file) {
+
+                    document.getElementById('file-name-preview')
+                        .innerHTML = "✓ " + file.name;
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (ev) {
+
+                        let img = document.getElementById('img-preview');
+
+                        if (img) {
+                            img.src = ev.target.result;
+                        }
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+    </script>
+
 }

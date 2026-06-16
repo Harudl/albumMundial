@@ -1,52 +1,185 @@
 @model albumMundial.Models.Album
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Álbum";
 }
 
-<h1>Details</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
 
-<div>
-    <h4>Album</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Anio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Anio)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CantidadCromos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CantidadCromos)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EdicionEspecial)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EdicionEspecial)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cromos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cromos)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+            <div class="mb-4">
+                <a asp-action="Index"
+                   class="text-decoration-none link-back small d-inline-flex align-items-center gap-2">
+                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+                    Volver al Catálogo de Álbumes
+                </a>
+            </div>
+
+            <div class="card card-details p-4 p-sm-5">
+
+                <div class="row g-5 align-items-center">
+
+                    <!-- PORTADA DEL ÁLBUM -->
+                    <div class="col-md-5 d-flex justify-content-center">
+
+                        <div class="cromo-view-container @(Model.EdicionEspecial ? "border-view-especial" : "border-view-estandar")">
+
+                            <span class="badge-view-number">
+                                @Model.Anio
+                            </span>
+
+                            @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+                            {
+                                <img src="@Model.ImagenUrl"
+                                     class="cromo-view-img"
+                                     alt="@Model.Nombre" />
+                            }
+                            else
+                            {
+                                <div class="text-center py-5 opacity-25">
+                                    <i data-lucide="book-open"
+                                       style="width:64px;height:64px;"
+                                       class="text-white mb-2"></i>
+
+                                    <p class="text-white small mb-0">
+                                        Sin portada
+                                    </p>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <!-- DATOS DEL ÁLBUM -->
+                    <div class="col-md-7">
+
+                        <div class="mb-4">
+
+                            @if (Model.EdicionEspecial)
+                            {
+                                <span class="badge px-3 py-2 rounded-pill mb-2 fw-bold"
+                                      style="background:linear-gradient(135deg,#a855f7,#6366f1); color:white;">
+                                    ⭐ EDICIÓN ESPECIAL
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge px-3 py-2 rounded-pill mb-2 fw-bold bg-secondary">
+                                    EDICIÓN ESTÁNDAR
+                                </span>
+                            }
+
+                            <h1 class="fw-extrabold text-white m-0 mt-2">
+                                @Model.Nombre
+                            </h1>
+
+                            <p class="small mt-1 text-secondary">
+                                Colección oficial del Mundial @Model.Anio.
+                            </p>
+
+                        </div>
+
+                        <hr class="border-secondary opacity-25 my-4" />
+
+                        <div class="row g-3">
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Año
+                                    </div>
+
+                                    <div class="info-value text-info">
+                                        @Model.Anio
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Capacidad
+                                    </div>
+
+                                    <div class="info-value text-warning">
+                                        @Model.CantidadCromos Cromos
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Cromos Registrados
+                                    </div>
+
+                                    <div class="info-value text-success">
+                                        @Model.Cromos.Count
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Tipo
+                                    </div>
+
+                                    <div class="info-value">
+                                        @(Model.EdicionEspecial ? "Edición Especial" : "Edición Estándar")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="info-box">
+                                    <div class="info-label">
+                                        Porcentaje Completado
+                                    </div>
+
+                                    <div class="info-value">
+                                        @(Model.CantidadCromos > 0
+                                            ? Math.Round((double)Model.Cromos.Count * 100 / Model.CantidadCromos, 1)
+                                            : 0)%
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-5 d-flex flex-wrap gap-3">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@Model.Id"
+                               class="btn btn-edit-action px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2 shadow">
+
+                                <i data-lucide="pencil"
+                                   style="width:16px;height:16px;"></i>
+
+                                Editar Álbum
+
+                            </a>
+
+                            <a asp-action="Index"
+                               class="btn btn-outline-light px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2 border-secondary">
+
+                                <i data-lucide="book-open"
+                                   style="width:16px;height:16px;"></i>
+
+                                Regresar al Catálogo
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>
