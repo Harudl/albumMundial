@@ -90,18 +90,18 @@ public class JugadoresController : Controller
     public async Task<IActionResult> Create(
         [Bind("Id,Nombre,Posicion,NumeroCamiseta,FechaNacimiento,EquipoId")]
         Jugador jugador,
-        IFormFile Foto)
+        IFormFile imagenJugador)
     {
-        if (Foto != null && Foto.Length > 0)
+        if (imagenJugador != null && imagenJugador.Length > 0)
         {
-            var fileName = Guid.NewGuid() + Path.GetExtension(Foto.FileName);
+            var fileName = Guid.NewGuid() + Path.GetExtension(imagenJugador.FileName);
 
             var path = Path.Combine(Directory.GetCurrentDirectory(),
                 "wwwroot/images/jugadores", fileName);
 
             using (var stream = new FileStream(path, FileMode.Create))
             {
-                await Foto.CopyToAsync(stream);
+                await imagenJugador.CopyToAsync(stream);
             }
 
             jugador.FotoUrl = "/images/jugadores/" + fileName;
@@ -152,20 +152,20 @@ public class JugadoresController : Controller
         int? id,
         [Bind("Id,Nombre,Posicion,NumeroCamiseta,FechaNacimiento,EquipoId,FotoUrl")]
         Jugador jugador,
-        IFormFile Foto)
+        IFormFile nuevaImagenJugador)
     {
         if (id != jugador.Id) return NotFound();
 
-        if (Foto != null && Foto.Length > 0)
+        if (nuevaImagenJugador != null && nuevaImagenJugador.Length > 0)
         {
-            var fileName = Guid.NewGuid() + Path.GetExtension(Foto.FileName);
+            var fileName = Guid.NewGuid() + Path.GetExtension(nuevaImagenJugador.FileName);
 
             var path = Path.Combine(Directory.GetCurrentDirectory(),
                 "wwwroot/images/jugadores", fileName);
 
             using (var stream = new FileStream(path, FileMode.Create))
             {
-                await Foto.CopyToAsync(stream);
+                await nuevaImagenJugador.CopyToAsync(stream);
             }
 
             jugador.FotoUrl = "/images/jugadores/" + fileName;
