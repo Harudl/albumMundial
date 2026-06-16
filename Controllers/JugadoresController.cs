@@ -13,7 +13,9 @@ public class JugadoresController : Controller
         _context = context;
     }
 
-    // GET: JUGADORES
+    // =========================
+    // INDEX
+    // =========================
     public async Task<IActionResult> Index(string searchString)
     {
         var jugadores = _context.Jugadores
@@ -33,7 +35,9 @@ public class JugadoresController : Controller
         return View(await jugadores.ToListAsync());
     }
 
-    // GET: JUGADORES/POR EQUIPO
+    // =========================
+    // POR EQUIPO
+    // =========================
     public async Task<IActionResult> PorEquipo(int id)
     {
         var jugadores = _context.Jugadores
@@ -43,36 +47,31 @@ public class JugadoresController : Controller
 
         ViewData["EquipoId"] = id;
 
-        ViewData["EquipoNombre"] = jugadores
-            .FirstOrDefault()?.Equipo?.Nombre;
+        ViewData["EquipoNombre"] = jugadores.FirstOrDefault()?.Equipo?.Nombre;
 
-        return View(await jugadores
-            .OrderBy(j => j.Nombre)
-            .ToListAsync());
+        return View(await jugadores.OrderBy(j => j.Nombre).ToListAsync());
     }
 
-    // GET: JUGADORES/DETAILS/5
+    // =========================
+    // DETAILS
+    // =========================
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var jugador = await _context.Jugadores
             .Include(j => j.Equipo)
             .Include(j => j.Cromo)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (jugador == null)
-        {
-            return NotFound();
-        }
+        if (jugador == null) return NotFound();
 
         return View(jugador);
     }
 
-    // GET: JUGADORES/CREATE
+    // =========================
+    // CREATE GET
+    // =========================
     public IActionResult Create()
     {
         ViewData["EquipoId"] = new SelectList(
@@ -83,18 +82,35 @@ public class JugadoresController : Controller
         return View();
     }
 
-    // POST: JUGADORES/CREATE
+    // =========================
+    // CREATE POST (CON FOTO)
+    // =========================
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [Bind("Id,Nombre,Posicion,NumeroCamiseta,FechaNacimiento,EquipoId")]
-        Jugador jugador)
+        Jugador jugador,
+        IFormFile Foto)
     {
+        if (Foto != null && Foto.Length > 0)
+        {
+            var fileName = Guid.NewGuid() + Path.GetExtension(Foto.FileName);
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot/images/jugadores", fileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await Foto.CopyToAsync(stream);
+            }
+
+            jugador.FotoUrl = "/images/jugadores/" + fileName;
+        }
+
         if (ModelState.IsValid)
         {
             _context.Add(jugador);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -107,20 +123,16 @@ public class JugadoresController : Controller
         return View(jugador);
     }
 
-    // GET: JUGADORES/EDIT/5
+    // =========================
+    // EDIT GET
+    // =========================
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var jugador = await _context.Jugadores.FindAsync(id);
 
-        if (jugador == null)
-        {
-            return NotFound();
-        }
+        if (jugador == null) return NotFound();
 
         ViewData["EquipoId"] = new SelectList(
             _context.Equipos.OrderBy(e => e.Nombre),
@@ -131,17 +143,32 @@ public class JugadoresController : Controller
         return View(jugador);
     }
 
-    // POST: JUGADORES/EDIT/5
+    // =========================
+    // EDIT POST (CON FOTO)
+    // =========================
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? id,
-        [Bind("Id,Nombre,Posicion,NumeroCamiseta,FechaNacimiento,EquipoId")]
-        Jugador jugador)
+        [Bind("Id,Nombre,Posicion,NumeroCamiseta,FechaNacimiento,EquipoId,FotoUrl")]
+        Jugador jugador,
+        IFormFile Foto)
     {
-        if (id != jugador.Id)
+        if (id != jugador.Id) return NotFound();
+
+        if (Foto != null && Foto.Length > 0)
         {
-            return NotFound();
+            var fileName = Guid.NewGuid() + Path.GetExtension(Foto.FileName);
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot/images/jugadores", fileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await Foto.CopyToAsync(stream);
+            }
+
+            jugador.FotoUrl = "/images/jugadores/" + fileName;
         }
 
         if (ModelState.IsValid)
@@ -154,9 +181,7 @@ public class JugadoresController : Controller
             catch (DbUpdateConcurrencyException)
             {
                 if (!JugadorExists(jugador.Id))
-                {
                     return NotFound();
-                }
 
                 throw;
             }
@@ -173,28 +198,26 @@ public class JugadoresController : Controller
         return View(jugador);
     }
 
-    // GET: JUGADORES/DELETE/5
+    // =========================
+    // DELETE GET
+    // =========================
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var jugador = await _context.Jugadores
             .Include(j => j.Equipo)
             .Include(j => j.Cromo)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (jugador == null)
-        {
-            return NotFound();
-        }
+        if (jugador == null) return NotFound();
 
         return View(jugador);
     }
 
-    // POST: JUGADORES/DELETE/5
+    // =========================
+    // DELETE POST
+    // =========================
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
@@ -210,6 +233,9 @@ public class JugadoresController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // =========================
+    // EXISTS
+    // =========================
     private bool JugadorExists(int? id)
     {
         return _context.Jugadores.Any(e => e.Id == id);
