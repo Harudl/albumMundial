@@ -3,59 +3,174 @@
     ViewData["Title"] = "Nuevo Equipo";
 }
 
-<h1>⚽ Nuevo Equipo</h1>
-<hr />
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
+    }
 
-<div class="row">
-    <div class="col-md-6">
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .sports-widget {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.75rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        max-width: 620px;
+    }
+
+    .form-dark-input,
+    .form-dark-select {
+        background-color: rgba(13, 14, 18, 0.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+        border-radius: 8px;
+    }
+
+        .form-dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-dark-input:focus,
+        .form-dark-select:focus {
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.2) !important;
+        }
+
+        .form-dark-select option {
+            background-color: #16181f;
+            color: #fff;
+        }
+
+    .form-label-dark {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .preview-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: rgba(255,255,255,0.05);
+        padding: 6px;
+        display: none;
+    }
+
+    .file-upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+        background: rgba(13, 14, 18, 0.4);
+    }
+
+        .file-upload-area:hover {
+            border-color: var(--accent-yellow);
+        }
+
+    .text-danger {
+        font-size: 0.78rem;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .divider-dark {
+        border-color: rgba(255,255,255,0.07);
+        margin: 1.25rem 0;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="sports-widget">
+
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i data-lucide="shield-plus" class="text-warning" style="width: 22px; height: 22px;"></i>
+            <h5 class="text-white fw-bold mb-0">Nuevo Equipo</h5>
+        </div>
+
+        <hr class="divider-dark">
+
         <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
             <div class="mb-3">
-                <label asp-for="Nombre" class="form-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <label asp-for="Nombre" class="form-label-dark">Nombre del equipo</label>
+                <input asp-for="Nombre" class="form-control form-dark-input" placeholder="Ej: Selección Argentina" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="DirectorTecnico" class="form-label"></label>
-                <input asp-for="DirectorTecnico" class="form-control" />
+                <label asp-for="DirectorTecnico" class="form-label-dark">Director Técnico</label>
+                <input asp-for="DirectorTecnico" class="form-control form-dark-input" placeholder="Ej: Lionel Scaloni" />
                 <span asp-validation-for="DirectorTecnico" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="AnioFundacion" class="form-label"></label>
-                <input asp-for="AnioFundacion" class="form-control" type="number" min="1800" max="2100" />
-                <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label asp-for="AnioFundacion" class="form-label-dark">Año de Fundación</label>
+                    <input asp-for="AnioFundacion" class="form-control form-dark-input"
+                           type="number" min="1800" max="2100" placeholder="Ej: 1893" />
+                    <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="GrupoMundialista" class="form-label-dark">Grupo Mundialista</label>
+                    <select asp-for="GrupoMundialista" class="form-select form-dark-select">
+                        <option value="">-- Grupo --</option>
+                        @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
+                        {
+                            <option value="@g">Grupo @g</option>
+                        }
+                    </select>
+                    <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="GrupoMundialista" class="form-label"></label>
-                <select asp-for="GrupoMundialista" class="form-select">
-                    <option value="">-- Seleccionar grupo --</option>
-                    @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
-                    {
-                        <option value="@g">Grupo @g</option>
-                    }
-                </select>
-                <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="PaisId" class="form-label">País</label>
-                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select">
+                <label asp-for="PaisId" class="form-label-dark">País</label>
+                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select form-dark-select">
                     <option value="">-- Seleccionar país --</option>
                 </select>
                 <span asp-validation-for="PaisId" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Logo del equipo</label>
-                <input type="file" name="logoFile" class="form-control" accept="image/*" />
+            <div class="mb-4">
+                <label class="form-label-dark">Logo del equipo</label>
+                <div class="file-upload-area" onclick="document.getElementById('logoFile').click()">
+                    <img id="previewLogo" class="preview-logo mb-2" src="#" alt="Preview" />
+                    <div id="uploadText">
+                        <i data-lucide="upload-cloud" class="text-warning mb-1" style="width:28px;height:28px;"></i>
+                        <p class="text-white-50 small mb-0">Haz clic para subir una imagen</p>
+                        <p class="mb-0" style="color: rgba(255,255,255,0.2); font-size:0.75rem;">PNG, JPG, SVG</p>
+                    </div>
+                </div>
+                <input type="file" id="logoFile" name="logoFile" class="d-none" accept="image/*"
+                       onchange="previewImage(this)" />
             </div>
 
-            <button type="submit" class="btn btn-success">Guardar</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            <hr class="divider-dark">
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-warning fw-bold px-4">
+                    <i data-lucide="save" class="d-inline-block me-1" style="width:15px;height:15px;"></i> Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary fw-semibold px-4" style="color: var(--text-secondary);">
+                    Cancelar
+                </a>
+            </div>
+
         </form>
     </div>
 </div>
@@ -64,4 +179,20 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('previewLogo');
+            const uploadText = document.getElementById('uploadText');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    uploadText.style.display = 'none';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }

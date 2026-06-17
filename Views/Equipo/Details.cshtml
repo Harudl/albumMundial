@@ -3,54 +3,281 @@
     ViewData["Title"] = "Detalle Equipo";
 }
 
-<h1>⚽ @Model.Nombre</h1>
-<hr />
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
+    }
 
-<dl class="row">
-    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nombre)</dt>
-    <dd class="col-sm-9">@Html.DisplayFor(m => m.Nombre)</dd>
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
 
-    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DirectorTecnico)</dt>
-    <dd class="col-sm-9">@Html.DisplayFor(m => m.DirectorTecnico)</dd>
+    /* HERO */
+    .equipo-hero {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        border-radius: 16px 16px 0 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(15,16,22,0.95) 0%, rgba(30,32,41,0.85) 100%);
+        border: 1px solid var(--border-color);
+        border-bottom: none;
+    }
 
-    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AnioFundacion)</dt>
-    <dd class="col-sm-9">@Html.DisplayFor(m => m.AnioFundacion)</dd>
+    .equipo-hero-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.2;
+        filter: blur(3px);
+    }
 
-    <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GrupoMundialista)</dt>
-    <dd class="col-sm-9">@Html.DisplayFor(m => m.GrupoMundialista)</dd>
+    .equipo-hero-logo {
+        position: relative;
+        z-index: 2;
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 20px rgba(0,0,0,0.8));
+        margin-bottom: 12px;
+    }
 
-    <dt class="col-sm-3">País</dt>
-    <dd class="col-sm-9">@Model.Pais?.Nombre</dd>
+    .equipo-hero-name {
+        position: relative;
+        z-index: 2;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    }
 
-    <dt class="col-sm-3">Logo</dt>
-    <dd class="col-sm-9">
+    .badge-grupo-hero {
+        position: relative;
+        z-index: 2;
+        margin-top: 8px;
+        background: rgba(168, 85, 247, 0.2);
+        border: 1px solid rgba(168, 85, 247, 0.5);
+        color: #c084fc;
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    /* BODY WIDGET */
+    .sports-widget {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0 0 16px 16px;
+        padding: 1.75rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        border-top: none;
+    }
+
+    /* INFO CARD */
+    .info-card {
+        background: rgba(10, 11, 14, 0.6);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        color: var(--text-secondary);
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .info-value {
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-align: right;
+    }
+
+    /* JUGADORES */
+    .jugador-item {
+        background: rgba(10, 11, 14, 0.5);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: border-color 0.2s;
+    }
+
+        .jugador-item:hover {
+            border-color: rgba(255,193,7,0.3);
+        }
+
+    .jugador-numero {
+        background: rgba(255,193,7,0.12);
+        border: 1px solid rgba(255,193,7,0.3);
+        color: var(--accent-yellow);
+        font-size: 0.75rem;
+        font-weight: 800;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .jugador-nombre {
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.88rem;
+    }
+
+    .jugador-posicion {
+        color: var(--text-secondary);
+        font-size: 0.76rem;
+    }
+
+    .section-title {
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+    }
+
+    .divider-dark {
+        border-color: rgba(255,255,255,0.07);
+        margin: 1.5rem 0;
+    }
+</style>
+
+<div class="container mt-4" style="max-width: 900px;">
+
+    <!-- HERO -->
+    <div class="equipo-hero">
         @if (!string.IsNullOrEmpty(Model.LogoUrl))
         {
-            <img src="@Model.LogoUrl" style="width:100px;height:100px;object-fit:cover;" class="rounded" />
+            <img src="@Model.LogoUrl" class="equipo-hero-bg" alt="fondo" />
+            <img src="@Model.LogoUrl" class="equipo-hero-logo" alt="Logo" />
         }
         else
         {
-            <span class="text-muted">Sin logo</span>
+            <i data-lucide="shield" style="width:80px;height:80px;color:rgba(255,255,255,0.15);position:relative;z-index:2;" class="mb-2"></i>
         }
-    </dd>
-</dl>
+        <div class="equipo-hero-name">@Model.Nombre</div>
+        <span class="badge-grupo-hero">Grupo @Model.GrupoMundialista</span>
+    </div>
 
-@if (Model.Jugadores != null && Model.Jugadores.Any())
-{
-    <h4>Jugadores</h4>
-    <ul class="list-group mb-3">
-        @foreach (var jugador in Model.Jugadores)
-        {
-            <li class="list-group-item">
-                #@jugador.NumeroCamiseta — @jugador.Nombre (@jugador.Posicion)
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p class="text-muted">Este equipo no tiene jugadores registrados.</p>
-}
+    <!-- CONTENIDO -->
+    <div class="sports-widget">
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+        <div class="row g-4">
+
+            <!-- COLUMNA IZQUIERDA: Info -->
+            <div class="col-md-6">
+                <div class="section-title">
+                    <i data-lucide="info" class="text-warning" style="width:16px;height:16px;"></i>
+                    Información del Equipo
+                </div>
+                <div class="info-card">
+                    <div class="info-row">
+                        <span class="info-label">Nombre</span>
+                        <span class="info-value">@Model.Nombre</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Director Técnico</span>
+                        <span class="info-value">@Model.DirectorTecnico</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Año Fundación</span>
+                        <span class="info-value">@Model.AnioFundacion</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Grupo Mundialista</span>
+                        <span class="info-value" style="color: #c084fc;">@Model.GrupoMundialista</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">País</span>
+                        <span class="info-value">@(Model.Pais?.Nombre ?? "Sin país")</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: Jugadores -->
+            <div class="col-md-6">
+                <div class="section-title">
+                    <i data-lucide="users" class="text-warning" style="width:16px;height:16px;"></i>
+                    Jugadores
+                    <span class="ms-auto" style="color: var(--text-secondary); font-size: 0.78rem; font-weight: 400;">
+                        @(Model.Jugadores?.Count ?? 0) registrados
+                    </span>
+                </div>
+
+                @if (Model.Jugadores != null && Model.Jugadores.Any())
+                {
+                    <div class="d-flex flex-column gap-2" style="max-height: 280px; overflow-y: auto;">
+                        @foreach (var jugador in Model.Jugadores)
+                        {
+                            <div class="jugador-item">
+                                <div class="jugador-numero">#@jugador.NumeroCamiseta</div>
+                                <div>
+                                    <div class="jugador-nombre">@jugador.Nombre</div>
+                                    <div class="jugador-posicion">@jugador.Posicion</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="info-card text-center py-3">
+                        <i data-lucide="user-x" style="width:32px;height:32px;color:rgba(255,255,255,0.15);" class="mb-2"></i>
+                        <p class="mb-0 text-white-50 small">Sin jugadores registrados</p>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        <hr class="divider-dark">
+
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning fw-bold px-4">
+                <i data-lucide="pencil" class="d-inline-block me-1" style="width:14px;height:14px;"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary fw-semibold px-4" style="color: var(--text-secondary);">
+                <i data-lucide="arrow-left" class="d-inline-block me-1" style="width:14px;height:14px;"></i> Volver
+            </a>
+        </div>
+
+    </div>
+</div>

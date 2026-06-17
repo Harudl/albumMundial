@@ -3,70 +3,254 @@
     ViewData["Title"] = "Editar Equipo";
 }
 
-<h1>✏️ Editar Equipo</h1>
-<hr />
+<style>
+    :root {
+        --card-bg: rgba(22, 24, 31, 0.85);
+        --border-color: rgba(38, 41, 54, 0.7);
+        --accent-yellow: #ffc107;
+        --text-secondary: #cbd5e1;
+    }
 
-<div class="row">
-    <div class="col-md-6">
+    body {
+        background: linear-gradient(180deg, rgba(13, 14, 18, 0.4) 0%, rgba(13, 14, 18, 0.9) 100%), url('/images/home_imagen.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* HERO BANNER */
+    .equipo-hero {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        border-radius: 16px 16px 0 0;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(15,16,22,0.95) 0%, rgba(30,32,41,0.85) 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-color);
+        border-bottom: none;
+    }
+
+    .equipo-hero-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.18;
+        filter: blur(2px);
+    }
+
+    .equipo-hero-logo {
+        position: relative;
+        z-index: 2;
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7));
+        margin-bottom: 10px;
+    }
+
+    .equipo-hero-name {
+        position: relative;
+        z-index: 2;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+
+    /* WIDGET FORM */
+    .sports-widget {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 0 0 16px 16px;
+        padding: 1.75rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-top: none;
+    }
+
+    .form-dark-input,
+    .form-dark-select {
+        background-color: rgba(13, 14, 18, 0.6) !important;
+        border: 1px solid var(--border-color) !important;
+        color: #fff !important;
+        border-radius: 8px;
+    }
+
+        .form-dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-dark-input:focus,
+        .form-dark-select:focus {
+            border-color: var(--accent-yellow) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.2) !important;
+        }
+
+        .form-dark-select option {
+            background-color: #16181f;
+            color: #fff;
+        }
+
+    .form-label-dark {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .file-upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+        background: rgba(13, 14, 18, 0.4);
+    }
+
+        .file-upload-area:hover {
+            border-color: var(--accent-yellow);
+        }
+
+    .logo-preview-current {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background: rgba(255,255,255,0.05);
+        padding: 4px;
+    }
+
+    .preview-logo-new {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid var(--accent-yellow);
+        background: rgba(255,255,255,0.05);
+        padding: 4px;
+        display: none;
+    }
+
+    .divider-dark {
+        border-color: rgba(255,255,255,0.07);
+        margin: 1.25rem 0;
+    }
+
+    .text-danger {
+        font-size: 0.78rem;
+        margin-top: 4px;
+        display: block;
+    }
+</style>
+
+<div class="container mt-4" style="max-width: 650px;">
+
+    <!-- HERO -->
+    <div class="equipo-hero">
+        @if (!string.IsNullOrEmpty(Model.LogoUrl))
+        {
+            <img src="@Model.LogoUrl" class="equipo-hero-bg" alt="fondo" />
+            <img src="@Model.LogoUrl" class="equipo-hero-logo" id="heroLogo" alt="Logo" />
+        }
+        else
+        {
+            <i data-lucide="shield" style="width:70px;height:70px;color:rgba(255,255,255,0.2);position:relative;z-index:2;" class="mb-2"></i>
+        }
+        <div class="equipo-hero-name">@Model.Nombre</div>
+    </div>
+
+    <!-- FORM WIDGET -->
+    <div class="sports-widget">
+
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <i data-lucide="pencil" class="text-warning" style="width: 18px; height: 18px;"></i>
+            <span class="text-white fw-bold">Editar información del equipo</span>
+        </div>
+
         <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="LogoUrl" />
-
-            <div class="mb-3">
-                <label asp-for="Nombre" class="form-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+        <div class="row g-3 mb-3">
+            <div class="col-6">
+                <label asp-for="Nombre" class="form-label-dark">Nombre del equipo</label>
+                <input asp-for="Nombre" class="form-control form-dark-input" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="DirectorTecnico" class="form-label"></label>
-                <input asp-for="DirectorTecnico" class="form-control" />
+            <div class="col-6">
+                <label asp-for="DirectorTecnico" class="form-label-dark">Director Técnico</label>
+                <input asp-for="DirectorTecnico" class="form-control form-dark-input" />
                 <span asp-validation-for="DirectorTecnico" class="text-danger"></span>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="AnioFundacion" class="form-label"></label>
-                <input asp-for="AnioFundacion" class="form-control" type="number" min="1800" max="2100" />
-                <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-6">
+                    <label asp-for="AnioFundacion" class="form-label-dark">Año de Fundación</label>
+                    <input asp-for="AnioFundacion" class="form-control form-dark-input" type="number" min="1800" max="2100" />
+                    <span asp-validation-for="AnioFundacion" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="GrupoMundialista" class="form-label-dark">Grupo Mundialista</label>
+                    <select asp-for="GrupoMundialista" class="form-select form-dark-select">
+                        <option value="">-- Grupo --</option>
+                        @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
+                        {
+                            <option value="@g">Grupo @g</option>
+                        }
+                    </select>
+                    <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="GrupoMundialista" class="form-label"></label>
-                <select asp-for="GrupoMundialista" class="form-select">
-                    <option value="">-- Seleccionar grupo --</option>
-                    @foreach (var g in new[] { "A", "B", "C", "D", "E", "F", "G", "H" })
-                    {
-                        <option value="@g">Grupo @g</option>
-                    }
-                </select>
-                <span asp-validation-for="GrupoMundialista" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="PaisId" class="form-label">País</label>
-                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select">
+                <label asp-for="PaisId" class="form-label-dark">País</label>
+                <select asp-for="PaisId" asp-items="ViewBag.PaisId" class="form-select form-dark-select">
                     <option value="">-- Seleccionar país --</option>
                 </select>
                 <span asp-validation-for="PaisId" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Logo actual</label><br />
-                @if (!string.IsNullOrEmpty(Model.LogoUrl))
-                {
-                    <img src="@Model.LogoUrl" style="width:80px;height:80px;object-fit:cover;" class="rounded mb-2" /><br />
-                }
-                else
-                {
-                    <span class="text-muted">Sin logo</span><br />
-                }
-                <label class="form-label mt-2">Cambiar logo (opcional)</label>
-                <input type="file" name="logoFile" class="form-control" accept="image/*" />
+            <!-- LOGO -->
+            <div class="mb-4">
+                <label class="form-label-dark">Logo del equipo</label>
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                    {
+                        <img src="@Model.LogoUrl" class="logo-preview-current" alt="Logo actual" />
+                        <span style="color: var(--text-secondary); font-size: 0.8rem;">Logo actual</span>
+                    }
+                    <img id="previewLogoNew" class="preview-logo-new" src="#" alt="Nuevo logo" />
+                    <span id="newLogoLabel" style="color: #fbbf24; font-size: 0.8rem; display:none;">Nuevo logo</span>
+                </div>
+                <div class="file-upload-area" onclick="document.getElementById('logoFile').click()">
+                    <i data-lucide="upload-cloud" class="text-warning mb-1" style="width:24px;height:24px;"></i>
+                    <p class="text-white-50 small mb-0">Haz clic para cambiar el logo</p>
+                    <p class="mb-0" style="color: rgba(255,255,255,0.2); font-size:0.75rem;">PNG, JPG, SVG — opcional</p>
+                </div>
+                <input type="file" id="logoFile" name="logoFile" class="d-none" accept="image/*"
+                       onchange="previewNewLogo(this)" />
             </div>
 
-            <button type="submit" class="btn btn-warning">Actualizar</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            <hr class="divider-dark">
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-warning fw-bold px-4">
+                    <i data-lucide="save" class="d-inline-block me-1" style="width:15px;height:15px;"></i> Actualizar
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary fw-semibold px-4" style="color: var(--text-secondary);">
+                    Cancelar
+                </a>
+            </div>
+
         </form>
     </div>
 </div>
@@ -75,4 +259,22 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function previewNewLogo(input) {
+            const preview = document.getElementById('previewLogoNew');
+            const label = document.getElementById('newLogoLabel');
+            const heroLogo = document.getElementById('heroLogo');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    label.style.display = 'inline';
+                    if (heroLogo) heroLogo.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }

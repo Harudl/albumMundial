@@ -2,7 +2,7 @@ using albumMundial.Data;
 using albumMundial.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 
 public class EquipoController : Controller
@@ -58,20 +58,41 @@ public class EquipoController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Equipo equipo, IFormFile? logoFile)
     {
+        ModelState.Remove("Pais");
+        ModelState.Remove("Jugadores");
+        ModelState.Remove("LogoUrl");
+
         if (ModelState.IsValid)
         {
+            // Verificar si ya existe un equipo con ese nombre
+            if (await _context.Equipos.AnyAsync(e => e.Nombre == equipo.Nombre))
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un equipo con ese nombre.");
+                ViewBag.PaisId = new SelectList(_context.Paises, "Id", "Nombre", equipo.PaisId);
+                return View(equipo);
+            }
+
             if (logoFile != null && logoFile.Length > 0)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(logoFile.FileName);
                 var path = Path.Combine(_env.WebRootPath, "images", fileName);
                 using var stream = new FileStream(path, FileMode.Create);
                 await logoFile.CopyToAsync(stream);
-                equipo.LogoUrl = "/images/" + fileName; // 👈 LogoUrl
+                equipo.LogoUrl = "/images/" + fileName;
             }
-            _context.Add(equipo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            try
+            {
+                _context.Add(equipo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un equipo con ese nombre.");
+            }
         }
+
         ViewBag.PaisId = new SelectList(_context.Paises, "Id", "Nombre", equipo.PaisId);
         return View(equipo);
     }
@@ -95,6 +116,10 @@ public class EquipoController : Controller
     {
         if (id != equipo.Id) return NotFound();
 
+        ModelState.Remove("Pais");
+        ModelState.Remove("Jugadores");
+        ModelState.Remove("LogoUrl");
+
         if (ModelState.IsValid)
         {
             if (logoFile != null && logoFile.Length > 0)
@@ -103,12 +128,22 @@ public class EquipoController : Controller
                 var path = Path.Combine(_env.WebRootPath, "images", fileName);
                 using var stream = new FileStream(path, FileMode.Create);
                 await logoFile.CopyToAsync(stream);
-                equipo.LogoUrl = "/images/" + fileName; // 👈 LogoUrl
+                equipo.LogoUrl = "/images/" + fileName;
             }
+            else
+            {
+                // Conservar el logo anterior si no se sube uno nuevo
+                var existing = await _context.Equipos
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(e => e.Id == equipo.Id);
+                equipo.LogoUrl = existing?.LogoUrl;
+            }
+
             _context.Update(equipo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
         ViewBag.PaisId = new SelectList(_context.Paises, "Id", "Nombre", equipo.PaisId);
         return View(equipo);
     }
